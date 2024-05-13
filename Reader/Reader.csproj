@@ -81,13 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Reader.cs" />
-    <Compile Include="Component\BlockRef.cs" />
-    <Compile Include="Component\Door.cs" />
-    <Compile Include="Component\MultiViewBlockRef.cs" />
-    <Compile Include="Component\Room.cs" />
-    <Compile Include="Component\Wall.cs" />
-    <Compile Include="Component\Window.cs" />
-    <Compile Include="Component\Zone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
