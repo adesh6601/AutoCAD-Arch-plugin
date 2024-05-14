@@ -46,6 +46,9 @@
     <Reference Include="AecArchMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AecArchMgd.dll</HintPath>
     </Reference>
+    <Reference Include="AecBaseMgd">
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecBaseMgd.dll</HintPath>
+    </Reference>
     <Reference Include="Component">
       <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
     </Reference>
@@ -64,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Building.cs" />
+    <Compile Include="BuildingComponents.cs" />
     <Compile Include="DataFormatter.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

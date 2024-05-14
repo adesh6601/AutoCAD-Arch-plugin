@@ -26,7 +26,6 @@ namespace Collection
 
 		public Building(Dictionary<string, Collection.DataFormatter.Layer> floors)
 		{
-
 			componenets();
 			this.Floors = floors;
 		}
