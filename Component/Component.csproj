@@ -78,6 +78,7 @@
     <Compile Include="Door.cs" />
     <Compile Include="DoorWindowAssembly.cs" />
     <Compile Include="MultiViewBlockReference.cs" />
+    <Compile Include="ACADObject.cs" />
     <Compile Include="Opening.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

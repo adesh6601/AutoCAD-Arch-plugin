@@ -1,47 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Component
 {
-	public class Space
+	public class Space : ACADObject
 	{
-		public Space() { }
-
-		public string BlockId { get; set; }
-		public string ObjectId { get; set; }
-		public string BlockName { get; set; }
-		public List<Component.Point> Bounds { get; set; }
-
-		public Component.Point StartPoint { get; set; }
-		public Component.Point EndPoint { get; set; }
-
+		public Space() : base() { }
 
 		public double Area { get; set; }
 
-		public string DisplayName { get; set; }
+		public Point StartPoint { get; set; }
+		public Point EndPoint { get; set; }
 
-		public string Name { get; set; }
-		public string Layer { get; set; }
-
-		public string LayerId { get; set; }
-
-		public string HandleId { get; set; }
+		public List<Wall> Walls { get; set; }
+		public List<List<List<double>>> Surfaces { get; set; }
+		public List<List<List<double>>> TranslatedSurfaces { get; set; }
 
 		public Autodesk.AutoCAD.DatabaseServices.Handle Handle { get; set; }
-		public List<List<List<double>>> Surfaces { get; set; }
+		public string HandleId { get; set; }
 
-		public List<List<List<double>>> translatedSurfaces { get; set; }
-		public List<Component.Wall> Walls { get; set; }
-
-		public Autodesk.AutoCAD.DatabaseServices.Handle MaterialHandle { get; set; }
 		public Autodesk.AutoCAD.DatabaseServices.Handle StyleHandle { get; set; }
-		public string MaterialId { get; set; }
 		public string StyleID { get; set; }
-
-		public Autodesk.AutoCAD.Colors.Color Color { get; set; }
-
 	}
 }

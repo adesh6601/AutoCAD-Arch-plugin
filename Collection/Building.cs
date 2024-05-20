@@ -22,12 +22,14 @@ namespace Collection
 		public BuildingDesign buildingDesign { get; set; }
 		public int pixelsPerUnit { get; set; }
 		public string displayUnit { get; set; }
+
+
 		public Dictionary<string, Collection.DataFormatter.Layer> Floors { get; set; }
 
 		public Building(Dictionary<string, Collection.DataFormatter.Layer> floors)
 		{
 			componenets();
-			this.Floors = floors;
+			Floors = floors;
 		}
 
 
