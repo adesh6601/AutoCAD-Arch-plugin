@@ -7,59 +7,85 @@ using Autodesk.Aec.Project;
 using Autodesk.AutoCAD.EditorInput;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 using Component;
+using Autodesk.AutoCAD.DatabaseServices;
+using System.Collections.Specialized;
+using System.IO;
+using Collection;
+using System.Xml;
 
 public class Reader
 {
-	public static Dictionary<string, List<Dictionary<string, object>>> allDataDictionary = new Dictionary<string, List<Dictionary<string, object>>>();
-	public static Dictionary<string, Dictionary<string, List<Dictionary<string, object>>>> layerDictionary = new Dictionary<string, Dictionary<string, List<Dictionary<string, object>>>>();
-	public static Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Wall> wallsDictionary = new Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Wall>();
-	public static Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Window> windowsDictionary = new Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Window>();
-	public static Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Door> doorsDictionary = new Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Door>();
-	public static Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Space> spacesDictionary = new Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Space>();
-	public static Dictionary<int, Autodesk.Aec.DatabaseServices.MultiViewBlockReference> multiViewBlockReferenceDictionary = new Dictionary<int, Autodesk.Aec.DatabaseServices.MultiViewBlockReference>();
-	public static Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Zone> zonesDictionary = new Dictionary<int, Autodesk.Aec.Arch.DatabaseServices.Zone>();
+	public Reader() { }
 
-	public static Dictionary<String, Collection.DataFormatter.Layer> floorsJson = new Dictionary<String, Collection.DataFormatter.Layer>();
-	public static Dictionary<String, Dictionary<String, Collection.DataFormatter.Layer>> floors = new Dictionary<String, Dictionary<String, Collection.DataFormatter.Layer>>();
-	public static List<Collection.DataFormatter.Layer> floorsList = new List<Collection.DataFormatter.Layer>();
+	public List<Component.BlockReference> BlockReferences = new List<Component.BlockReference>();
+	public List<Component.CurtainWall> CurtainWalls = new List<Component.CurtainWall>();
+	public List<Component.Door> Doors = new List<Component.Door>();
+	public List<Component.DoorwindowAssembly> DoorwindowAssemblies = new List<Component.DoorwindowAssembly>();
+	public List<Component.MultiViewBlockReference> MultiViewBlockReferences = new List<Component.MultiViewBlockReference>();
+	public List<Component.Opening> Openings = new List<Component.Opening>();
+	public List<Component.Space> Spaces = new List<Component.Space>();
+	public List<Component.Wall> Walls = new List<Component.Wall>();
+	public List<Component.Window> Windows = new List<Component.Window>();
+	public List<Component.Zone> Zones = new List<Component.Zone>();
+
+	public Project CurrentProject;
+	public ProjectFile[] CurrentProjectFiles;
+	public StringCollection xRefs;
+	public Dictionary<string, List<string>> LevelsAndDivisions;
 
 
-	public static Dictionary<string, Collection.BuildingComponents> Elements = new Dictionary<string, Collection.BuildingComponents>();
-	public static Dictionary<string, Collection.BuildingComponents> ElementsInProjectNevigator = new Dictionary<string, Collection.BuildingComponents>();
-	public static Dictionary<string, Collection.BuildingComponents> ConstructsInProjectNevigator = new Dictionary<string, Collection.BuildingComponents>();
 
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Wall> walls = new List<Autodesk.Aec.Arch.DatabaseServices.Wall>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout> curtainWallLayout = new List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Window> windows = new List<Autodesk.Aec.Arch.DatabaseServices.Window>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.WindowAssembly> windowAssembly = new List<Autodesk.Aec.Arch.DatabaseServices.WindowAssembly>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Door> doors = new List<Autodesk.Aec.Arch.DatabaseServices.Door>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Opening> openings = new List<Autodesk.Aec.Arch.DatabaseServices.Opening>();
+	public void OpenProject(string ProjectPath)
+	{
+		ProjectBaseServices projectBaseServices = ProjectBaseServices.Service;
+		ProjectBaseManager projectManager = projectBaseServices.ProjectManager;
+		CurrentProject = projectManager.OpenProject(OpenMode.ForRead, ProjectPath);
+	}
 
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Space> spaces = new List<Autodesk.Aec.Arch.DatabaseServices.Space>();
-	public static List<Autodesk.AutoCAD.DatabaseServices.BlockReference> BlockReferences = new List<Autodesk.AutoCAD.DatabaseServices.BlockReference>();
-	public static List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference> multiViewBlockReferences = new List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference>();
-	public static List<Autodesk.Aec.Arch.DatabaseServices.Zone> zones = new List<Autodesk.Aec.Arch.DatabaseServices.Zone>();
+	public void GetProjectFiles()
+	{
+		CurrentProjectFiles = CurrentProject.GetConstructs();
+	}
 
-	public static int wallCount = 0;
-	public static int windowCount = 0;
-	public static int spaceCount = 0;
-	public static int doorCount = 0;
-	public static int multiViewBlockReferenceCount = 0;
-	public static int zoneCount = 0;
-	public static int count = 0;
+	public void GetLevelsAndDivisions(string FilePath)
+	{
+		if (!File.Exists(FilePath))
+		{
+			return;
+		}
 
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WallStyle> wallStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WallStyle>();
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayoutStyle> curtainWallStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayoutStyle>();
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WindowStyle> windowStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WindowStyle>();
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WindowAssemblyStyle> windowAssemblyStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.WindowAssemblyStyle>();
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.DoorStyle> doorStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.DoorStyle>();
-	public static Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.OpeningEndcapStyle> openingStylesDictionary = new Dictionary<string, Autodesk.Aec.Arch.DatabaseServices.OpeningEndcapStyle>();
+		using (XmlReader reader = XmlReader.Create(FilePath))
+		{
+			while (reader.Read())
+			{
+				if (reader.NodeType != XmlNodeType.Element || reader.Name != "Cell")
+				{
+					continue;
+				}
+				
+				string level = reader.GetAttribute("Level");
+				string division = reader.GetAttribute("Division");
 
-	public static Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material> materialsDictionary = new Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material>();
+				if (!LevelsAndDivisions.ContainsKey(division))
+				{
+					LevelsAndDivisions.Add(division, new List<string>());
+				}
 
-	public static string projectFilePath = "C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj";
-	private ProjectBaseManager mgr = ProjectBaseServices.Service.ProjectManager;
-	private static Project proj = null;
-	private static Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+				List<string> levelsList = LevelsAndDivisions[division];
+				
+				if (!levelsList.Contains(level))
+				{
+					continue;
+				}
+				levelsList.Add(level);
+			}
+		}
+	}
 
+	public void GetXRef(ProjectFile File)
+	{
+		string drawingFullPath = File.DrawingFullPath;
+
+
+	}
 }
