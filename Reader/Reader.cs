@@ -33,8 +33,6 @@ public class Reader
 
 	public Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material> materialsDictionary = new Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material>();
 
-
-
 	public Project Project;
 	public ProjectFile[] ProjectFiles;
 
@@ -47,7 +45,50 @@ public class Reader
 	public StringCollection xRefs;
 	public Dictionary<string, List<string>> LevelsAndDivisions;
 
+	public void Read()
+	{
+		OpenProject("C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj");
+		SetProjectFiles();
 
+		foreach (ProjectFile projectFile in ProjectFiles)
+		{
+			if (projectFile.Name == "")
+			{
+				continue;
+			}
+
+			LevelsAndDivisions.Clear();
+			SetLevelsAndDivisions(projectFile.FileFullPath);
+
+			xRefs.Clear();
+			SetXRefs(projectFile);
+
+			OpenFileInApp(projectFile);
+
+			SetDatabase();
+			SetTransaction();
+			SetBlockTableRecorde();
+
+			foreach(Autodesk.AutoCAD.DatabaseServices.ObjectId objectId in BlockTableRecord)
+			{
+				var entity = GetEntity(objectId);
+				if (entity == null)
+				{
+					continue;
+				}
+
+				var entityType = GetEntityType(entity);
+				if (entityType == null || entityType == "")
+				{
+					continue;
+				}
+
+				AddEntityToList(entity, entityType);
+				AddEntityMaterialToDict(entityType);
+			}
+		}
+
+	}
 
 	public void OpenProject(string projectPath)
 	{
@@ -98,8 +139,6 @@ public class Reader
 
 	public void SetXRefs(ProjectFile file)
 	{
-		xRefs.Clear();
-
 		if (file == null || !file.DwgExists)
 		{
 			return;
@@ -128,26 +167,10 @@ public class Reader
 		}
 	}
 
-	public void SetDocument(ProjectFile file)
-	{
-		string dwgFullPath = file.DrawingFullPath;
-
-		DocumentCollection documentManager = Application.DocumentManager;
-		foreach (Document document in documentManager)
-		{
-			if (document.Name != dwgFullPath)
-			{
-				continue;
-			}
-
-			Document = document;
-			return;
-		}
-	}
-
 	public void OpenFileInApp(ProjectFile file)
 	{
 		string dwgFullPath = file.DrawingFullPath;
+
 		try
 		{
 			dynamic acadApp = Marshal.GetActiveObject("AutoCAD.Application");
@@ -163,9 +186,21 @@ public class Reader
 		}
 	}
 
-	public void CloseFileInApp()
+	public void SetDocument(ProjectFile file)
 	{
-		OpenedDoc.Close();
+		string dwgFullPath = file.DrawingFullPath;
+
+		DocumentCollection documentManager = Application.DocumentManager;
+		foreach (Document document in documentManager)
+		{
+			if (document.Name != dwgFullPath)
+			{
+				continue;
+			}
+
+			Document = document;
+			return;
+		}
 	}
 
 	public void SetDatabase()
@@ -399,7 +434,10 @@ public class Reader
 		}
 	}
 
-
+	public void CloseFileInApp()
+	{
+		OpenedDoc.Close();
+	}
 
 	public Database GetDbForFile(string dwgFullPath)
 	{
@@ -430,6 +468,4 @@ public class Reader
 	{
 		return string.Equals(path1, path2, StringComparison.OrdinalIgnoreCase);
 	}
-
-
 }
