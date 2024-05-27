@@ -15,12 +15,14 @@ using System.Xml;
 using Autodesk.AutoCAD.ApplicationServices;
 using System.Runtime.InteropServices;
 using Autodesk.Aec.Arch.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
+using System.Threading;
 
 public class Reader
 {
 	public Reader() { }
 
-	public List<Autodesk.Aec.DatabaseServices.BlockReference> BlockReferences = new List<Autodesk.Aec.DatabaseServices.BlockReference>();
+	public List<Autodesk.AutoCAD.DatabaseServices.BlockReference> BlockReferences = new List<Autodesk.AutoCAD.DatabaseServices.BlockReference>();
 	public List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout> CurtainWalls = new List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout>();
 	public List<Autodesk.Aec.Arch.DatabaseServices.Door> Doors = new List<Autodesk.Aec.Arch.DatabaseServices.Door>();
 	public List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference> MultiViewBlockReferences = new List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference>();
@@ -42,9 +44,10 @@ public class Reader
 
 	public Transaction Txn;
 	public BlockTableRecord BlockTableRecord;
-	public StringCollection xRefs;
-	public Dictionary<string, List<string>> LevelsAndDivisions;
+	public StringCollection xRefs = new StringCollection();
+	public Dictionary<string, List<string>> LevelsAndDivisions = new Dictionary<string, List<string>>();
 
+	[CommandMethod("Read")]
 	public void Read()
 	{
 		OpenProject("C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj");
@@ -71,13 +74,13 @@ public class Reader
 
 			foreach(Autodesk.AutoCAD.DatabaseServices.ObjectId objectId in BlockTableRecord)
 			{
-				var entity = GetEntity(objectId);
+				object entity = GetEntity(objectId);
 				if (entity == null)
 				{
 					continue;
 				}
 
-				var entityType = GetEntityType(entity);
+				string entityType = GetEntityType(entity);
 				if (entityType == null || entityType == "")
 				{
 					continue;
@@ -86,8 +89,14 @@ public class Reader
 				AddEntityToList(entity, entityType);
 				AddEntityMaterialToDict(entityType);
 			}
+
+			Txn.Commit();
+			//OpenedDoc.Close();
+			//Thread.Sleep(1000);
+			CloseFileInApp();
 		}
 
+		string stop = "stop";
 	}
 
 	public void OpenProject(string projectPath)
@@ -223,7 +232,7 @@ public class Reader
 		return Txn.GetObject(objectId, OpenMode.ForRead);
 	}
 
-	public string GetEntityType(dynamic entity)
+	public string GetEntityType(object entity)
 	{
 		if (entity is Autodesk.Aec.Arch.DatabaseServices.Wall) return "wall";
 
@@ -300,7 +309,7 @@ public class Reader
 
 		if (entityType == "blockReference")
 		{
-			BlockReferences.Add((Autodesk.Aec.DatabaseServices.BlockReference)entity);
+			BlockReferences.Add((Autodesk.AutoCAD.DatabaseServices.BlockReference)entity);
 			return;
 		}
 

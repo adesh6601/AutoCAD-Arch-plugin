@@ -665,7 +665,7 @@ namespace Collection
                 }
 
                 spaceObj.Surfaces = walls;
-                spaceObj.translatedSurfaces = GetTranslatedCoordinatesOfWall(walls,spaceObj.Bounds);
+                //spaceObj.translatedSurfaces = GetTranslatedCoordinatesOfWall(walls,spaceObj.Bounds);
                 
 
                 spacesDictionary.Add(spaceObj.ObjectId.ToString(), spaceObj);
@@ -750,7 +750,7 @@ namespace Collection
                     wallObj.ObjectId = blockReference.ObjectId.OldId.ToString();
                     wallObj.BlockId = blockReference.BlockId.OldId.ToString();
                     wallObj.BlockName = blockReference.BlockName;
-                    wallObj.BlockUnit = blockReference.BlockUnit.ToString();
+                    //wallObj.BlockUnit = blockReference.BlockUnit.ToString();
                     List<Component.Point> bounds = new List<Component.Point>();
                     Component.Point maxPoint = new Component.Point(blockReference.Bounds.Value.MaxPoint.X, blockReference.Bounds.Value.MaxPoint.Y, blockReference.Bounds.Value.MaxPoint.Z);
                     Component.Point minPoint = new Component.Point(blockReference.Bounds.Value.MinPoint.X, blockReference.Bounds.Value.MinPoint.Y, blockReference.Bounds.Value.MinPoint.Z);
