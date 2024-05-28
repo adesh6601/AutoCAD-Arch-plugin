@@ -1,45 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.Aec.Project;
-using Autodesk.AutoCAD.EditorInput;
-using Application = Autodesk.AutoCAD.ApplicationServices.Application;
-using Component;
-using Autodesk.AutoCAD.DatabaseServices;
 using System.Collections.Specialized;
 using System.IO;
-using Collection;
-using System.Xml;
-using Autodesk.AutoCAD.ApplicationServices;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml;
 using Autodesk.Aec.Arch.DatabaseServices;
+using Autodesk.Aec.DatabaseServices;
+using Autodesk.Aec.Project;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
-using System.Threading;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 public class Reader
 {
-	public Reader() { }
+	public List<CurtainWallLayout> CurtainWalls = new List<CurtainWallLayout>();
+	public List<Door> Doors = new List<Door>();
+	public List<Opening> Openings = new List<Opening>();
+	public List<Wall> Walls = new List<Wall>();
+	public List<Window> Windows = new List<Window>();
+	public List<WindowAssembly> WindowAssembly = new List<WindowAssembly>();
 
 	public List<Autodesk.AutoCAD.DatabaseServices.BlockReference> BlockReferences = new List<Autodesk.AutoCAD.DatabaseServices.BlockReference>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout> CurtainWalls = new List<Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Door> Doors = new List<Autodesk.Aec.Arch.DatabaseServices.Door>();
-	public List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference> MultiViewBlockReferences = new List<Autodesk.Aec.DatabaseServices.MultiViewBlockReference>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Opening> Openings = new List<Autodesk.Aec.Arch.DatabaseServices.Opening>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Space> Spaces = new List<Autodesk.Aec.Arch.DatabaseServices.Space>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Wall> Walls = new List<Autodesk.Aec.Arch.DatabaseServices.Wall>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Window> Windows = new List<Autodesk.Aec.Arch.DatabaseServices.Window>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.WindowAssembly> WindowAssembly = new List<Autodesk.Aec.Arch.DatabaseServices.WindowAssembly>();
-	public List<Autodesk.Aec.Arch.DatabaseServices.Zone> Zones = new List<Autodesk.Aec.Arch.DatabaseServices.Zone>();
+	public List<MultiViewBlockReference> MultiViewBlockReferences = new List<MultiViewBlockReference>();
 
-	public Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material> materialsDictionary = new Dictionary<string, Autodesk.AutoCAD.DatabaseServices.Material>();
+	public List<Zone> Zones = new List<Zone>();
+	public List<Space> Spaces = new List<Space>();
+
+	public Dictionary<string, Material> MaterialsDictionary = new Dictionary<string, Material>();
 
 	public Project Project;
 	public ProjectFile[] ProjectFiles;
 
 	public Document Document;
-	dynamic OpenedDoc;
+	public dynamic OpenedDoc;
 	public Database Database;
 
 	public Transaction Txn;
@@ -90,12 +85,11 @@ public class Reader
 				AddEntityMaterialToDict(entityType);
 			}
 
-			Txn.Commit();
-			//OpenedDoc.Close();
-			//Thread.Sleep(1000);
+			ResetTransaction();
 			CloseFileInApp();
 		}
 
+		CheckCounts();
 		string stop = "stop";
 	}
 
@@ -222,6 +216,11 @@ public class Reader
 		Txn = Database.TransactionManager.StartTransaction();
 	}
 
+	public void ResetTransaction()
+	{
+		Txn.Commit();
+	}
+
 	public void SetBlockTableRecorde()
 	{
 		BlockTableRecord = Txn.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(Database), OpenMode.ForRead) as BlockTableRecord;
@@ -234,25 +233,25 @@ public class Reader
 
 	public string GetEntityType(object entity)
 	{
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Wall) return "wall";
+		if (entity is Wall) return "wall";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout)	return "curtainWallLayout";
+		if (entity is CurtainWallLayout)	return "curtainWallLayout";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Window) return "window";
+		if (entity is Window) return "window";
 		
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.WindowAssembly) return "windowAssembly";
+		if (entity is WindowAssembly) return "windowAssembly";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Door) return "door";
+		if (entity is Door) return "door";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Opening) return "opening";
+		if (entity is Opening) return "opening";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Space) return "space";
+		if (entity is Space) return "space";
 
-		if (entity is Autodesk.Aec.DatabaseServices.MultiViewBlockReference) return "multiViewBlockReference";
+		if (entity is MultiViewBlockReference) return "multiViewBlockReference";
 
 		if (entity is Autodesk.AutoCAD.DatabaseServices.BlockReference) return "blockReference";
 
-		if (entity is Autodesk.Aec.Arch.DatabaseServices.Zone) return "zone";
+		if (entity is Zone) return "zone";
 
 		return null;
 	}
@@ -261,49 +260,49 @@ public class Reader
 	{
 		if(entityType == "wall")
 		{
-			Walls.Add((Autodesk.Aec.Arch.DatabaseServices.Wall)entity);
+			Walls.Add((Wall)entity);
 			return;
 		}
 
 		if (entityType == "curtainWallLayout")
 		{
-			CurtainWalls.Add((Autodesk.Aec.Arch.DatabaseServices.CurtainWallLayout)entity);
+			CurtainWalls.Add((CurtainWallLayout)entity);
 			return;
 		}
 
 		if (entityType == "window")
 		{
-			Windows.Add((Autodesk.Aec.Arch.DatabaseServices.Window)entity);
+			Windows.Add((Window)entity);
 			return;
 		}
 
 		if (entityType == "windowAssembly")
 		{
-			WindowAssembly.Add((Autodesk.Aec.Arch.DatabaseServices.WindowAssembly)entity);
+			WindowAssembly.Add((WindowAssembly)entity);
 			return;
 		}
 
 		if (entityType == "door")
 		{
-			Doors.Add((Autodesk.Aec.Arch.DatabaseServices.Door)entity);
+			Doors.Add((Door)entity);
 			return;
 		}
 
 		if (entityType == "opening")
 		{
-			Openings.Add((Autodesk.Aec.Arch.DatabaseServices.Opening)entity);
+			Openings.Add((Opening)entity);
 			return;
 		}
 
 		if (entityType == "space")
 		{
-			Spaces.Add((Autodesk.Aec.Arch.DatabaseServices.Space)entity);
+			Spaces.Add((Space)entity);
 			return;
 		}
 
 		if (entityType == "multiViewBlockReference")
 		{
-			MultiViewBlockReferences.Add((Autodesk.Aec.DatabaseServices.MultiViewBlockReference)entity);
+			MultiViewBlockReferences.Add((MultiViewBlockReference)entity);
 			return;
 		}
 
@@ -315,7 +314,7 @@ public class Reader
 
 		if (entityType == "zone")
 		{
-			Zones.Add((Autodesk.Aec.Arch.DatabaseServices.Zone)entity);
+			Zones.Add((Zone)entity);
 			return;
 		}
 	}
@@ -324,120 +323,120 @@ public class Reader
 	{
 		if (entityType == "wall")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Walls.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Walls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Walls.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "curtainWallLayout")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(CurtainWalls.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(CurtainWalls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = CurtainWalls.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "window")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Windows.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Windows.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Windows.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "windowAssembly")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(WindowAssembly.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(WindowAssembly.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = WindowAssembly.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "door")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Doors.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Doors.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Doors.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "opening")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Openings.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Openings.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Openings.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "space")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Spaces.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Spaces.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Spaces.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "multiViewBlockReference")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(MultiViewBlockReferences.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(MultiViewBlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = MultiViewBlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "blockReference")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(BlockReferences.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(BlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = BlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
 
 		if (entityType == "zone")
 		{
-			Autodesk.AutoCAD.DatabaseServices.Material material = Txn.GetObject(Zones.Last().MaterialId, OpenMode.ForRead) as Autodesk.AutoCAD.DatabaseServices.Material;
+			Material material = Txn.GetObject(Zones.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Zones.Last().MaterialId.Handle.ToString();
 
-			if (!materialsDictionary.ContainsKey(materialId))
+			if (!MaterialsDictionary.ContainsKey(materialId))
 			{
-				materialsDictionary[materialId] = material;
+				MaterialsDictionary[materialId] = material;
 			}
 			return;
 		}
@@ -476,5 +475,39 @@ public class Reader
 	public bool IsSamePath(string path1, string path2)
 	{
 		return string.Equals(path1, path2, StringComparison.OrdinalIgnoreCase);
+	}
+
+	public void CheckCounts()
+	{
+		string filePath = "counts.txt";
+
+		string text = "BlockReferences - " + BlockReferences.Count() +
+						"\nCurtainWalls - " + CurtainWalls.Count() +
+						"\nDoors - " + Doors.Count() +
+						"\nMultiViewBlockReferences - " + MultiViewBlockReferences.Count() +
+						"\nOpenings - " + Openings.Count() +
+						"\nSpaces - " + Spaces.Count() +
+						"\nWalls - " + Walls.Count() +
+						"\nWindows - " + Windows.Count() +
+						"\nWindowAssembly - " + WindowAssembly.Count() +
+						"\nZones - " + Zones.Count() +
+						"\nmaterialsDictionary - " + MaterialsDictionary.Count();
+		WriteTextToFile(filePath, text);
+	}
+
+	static void WriteTextToFile(string filePath, string text)
+	{
+		try
+		{
+			using (StreamWriter writer = new StreamWriter(filePath))
+			{
+				writer.WriteLine(text);
+			}
+			Console.WriteLine("Text written to file successfully.");
+		}
+		catch (System.Exception ex)
+		{
+			Console.WriteLine("An error occurred while writing to the file: " + ex.Message);
+		}
 	}
 }
