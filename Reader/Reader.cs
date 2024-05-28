@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
+using Collection;
 using Autodesk.Aec.Arch.DatabaseServices;
 using Autodesk.Aec.DatabaseServices;
 using Autodesk.Aec.Project;
@@ -42,8 +43,8 @@ public class Reader
 	public StringCollection xRefs = new StringCollection();
 	public Dictionary<string, List<string>> LevelsAndDivisions = new Dictionary<string, List<string>>();
 
-	[CommandMethod("Read")]
-	public void Read()
+	[CommandMethod("Read Entities")]
+	public void ReadEntities()
 	{
 		OpenProject("C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj");
 		SetProjectFiles();
@@ -92,6 +93,28 @@ public class Reader
 		CheckCounts();
 		string stop = "stop";
 	}
+
+	public ModelData GetModelData()
+	{
+		ModelData modelData = new ModelData();
+
+		modelData.CurtainWalls = CurtainWalls;
+		modelData.Doors = Doors; ;
+		modelData.Openings = Openings;
+		modelData.Walls = Walls;
+		modelData.Windows = Windows;
+		modelData.WindowAssembly = WindowAssembly;
+
+		modelData.BlockReferences = BlockReferences;
+		modelData.MultiViewBlockReferences = MultiViewBlockReferences;
+
+		modelData.Zones = Zones;
+		modelData.Spaces = Spaces;
+
+		modelData.MaterialsDictionary = MaterialsDictionary;
+
+		return modelData;
+}
 
 	public void OpenProject(string projectPath)
 	{

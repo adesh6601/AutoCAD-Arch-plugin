@@ -1,15 +1,11 @@
-﻿using Autodesk.Aec.Arch.DatabaseServices;
-using Autodesk.AutoCAD.DatabaseServices;
+﻿using System.Collections.Generic;
+using Autodesk.Aec.Arch.DatabaseServices;
 using Autodesk.Aec.DatabaseServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Autodesk.AutoCAD.DatabaseServices;
 
 namespace Collection
 {
-	public class Data
+	public class ModelData
 	{
 		public List<CurtainWallLayout> CurtainWalls { get; set; } = new List<CurtainWallLayout>();
 		public List<Door> Doors { get; set; } = new List<Door>();
@@ -22,7 +18,7 @@ namespace Collection
 		public List<MultiViewBlockReference> MultiViewBlockReferences { get; set; } = new List<MultiViewBlockReference>();
 
 		public List<Zone> Zones { get; set; } = new List<Zone>();
-		public List<Space> Spaces { get; set; }  = new List<Space>();
+		public List<Space> Spaces { get; set; } = new List<Space>();
 
 		public Dictionary<string, Material> MaterialsDictionary { get; set; } = new Dictionary<string, Material>();
 	}
