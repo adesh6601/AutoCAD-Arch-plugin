@@ -29,7 +29,14 @@ public class Reader
 	public List<Zone> Zones = new List<Zone>();
 	public List<Space> Spaces = new List<Space>();
 
-	public Dictionary<string, Material> MaterialsDictionary = new Dictionary<string, Material>();
+	public Dictionary<string, Material> Materials = new Dictionary<string, Material>();
+
+	public Dictionary<string, CurtainWallLayoutStyle> CurtainWallLayoutStyles = new Dictionary<string, CurtainWallLayoutStyle>();
+	public Dictionary<string, DoorStyle> DoorStyles = new Dictionary<string, DoorStyle>();
+	public Dictionary<string, OpeningEndcapStyle> OpeningStyles = new Dictionary<string, OpeningEndcapStyle>();
+	public Dictionary<string, WallStyle> WallStyles = new Dictionary<string, WallStyle>();
+	public Dictionary<string, WindowStyle> WindowStyles = new Dictionary<string, WindowStyle>();
+	public Dictionary<string, WindowAssemblyStyle> WindowAssemblyStyles = new Dictionary<string, WindowAssemblyStyle>();
 
 	public Project Project;
 	public ProjectFile[] ProjectFiles;
@@ -84,6 +91,7 @@ public class Reader
 
 				AddEntityToList(entity, entityType);
 				AddEntityMaterialToDict(entityType);
+				AddEntityStyleToDict(entityType);
 			}
 
 			ResetTransaction();
@@ -91,29 +99,35 @@ public class Reader
 		}
 
 		CheckCounts();
-		string stop = "stop";
 	}
 
-	public ModelData GetModelData()
+	public Entities GetEntities()
 	{
-		ModelData modelData = new ModelData();
+        Entities entities = new Entities();
 
-		modelData.CurtainWalls = CurtainWalls;
-		modelData.Doors = Doors; ;
-		modelData.Openings = Openings;
-		modelData.Walls = Walls;
-		modelData.Windows = Windows;
-		modelData.WindowAssembly = WindowAssembly;
+		entities.CurtainWalls = CurtainWalls;
+		entities.Doors = Doors; ;
+		entities.Openings = Openings;
+		entities.Walls = Walls;
+		entities.Windows = Windows;
+		entities.WindowAssembly = WindowAssembly;
 
-		modelData.BlockReferences = BlockReferences;
-		modelData.MultiViewBlockReferences = MultiViewBlockReferences;
+		entities.BlockReferences = BlockReferences;
+		entities.MultiViewBlockReferences = MultiViewBlockReferences;
 
-		modelData.Zones = Zones;
-		modelData.Spaces = Spaces;
+		entities.Zones = Zones;
+		entities.Spaces = Spaces;
 
-		modelData.MaterialsDictionary = MaterialsDictionary;
+		entities.Materials = Materials;
 
-		return modelData;
+		entities.CurtainWallLayoutStyles = CurtainWallLayoutStyles;
+		entities.DoorStyles = DoorStyles;
+		entities.OpeningStyles = OpeningStyles;
+		entities.WallStyles = WallStyles;
+		entities.WindowStyles = WindowStyles;
+		entities.WindowAssemblyStyles = WindowAssemblyStyles;
+
+		return entities;
 }
 
 	public void OpenProject(string projectPath)
@@ -349,9 +363,9 @@ public class Reader
 			Material material = Txn.GetObject(Walls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Walls.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -361,9 +375,9 @@ public class Reader
 			Material material = Txn.GetObject(CurtainWalls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = CurtainWalls.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -373,9 +387,9 @@ public class Reader
 			Material material = Txn.GetObject(Windows.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Windows.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -385,9 +399,9 @@ public class Reader
 			Material material = Txn.GetObject(WindowAssembly.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = WindowAssembly.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -397,9 +411,9 @@ public class Reader
 			Material material = Txn.GetObject(Doors.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Doors.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -409,9 +423,9 @@ public class Reader
 			Material material = Txn.GetObject(Openings.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Openings.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -421,9 +435,9 @@ public class Reader
 			Material material = Txn.GetObject(Spaces.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Spaces.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -433,9 +447,9 @@ public class Reader
 			Material material = Txn.GetObject(MultiViewBlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = MultiViewBlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -445,9 +459,9 @@ public class Reader
 			Material material = Txn.GetObject(BlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = BlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
 			}
 			return;
 		}
@@ -457,9 +471,84 @@ public class Reader
 			Material material = Txn.GetObject(Zones.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Zones.Last().MaterialId.Handle.ToString();
 
-			if (!MaterialsDictionary.ContainsKey(materialId))
+			if (!Materials.ContainsKey(materialId))
 			{
-				MaterialsDictionary[materialId] = material;
+				Materials[materialId] = material;
+			}
+			return;
+		}
+	}
+
+	public void AddEntityStyleToDict(string entityType)
+	{
+		if (entityType == "wall")
+		{
+			WallStyle wallStyle = Txn.GetObject(Walls.Last().StyleId, OpenMode.ForRead) as WallStyle;
+			string wallStyleId = Walls.Last().StyleId.Handle.ToString();
+
+			if (!WallStyles.ContainsKey(wallStyleId))
+			{
+				WallStyles[wallStyleId] = wallStyle;
+			}
+			return;
+		}
+
+		if (entityType == "curtainWallLayout")
+		{
+			CurtainWallLayoutStyle curtainWallLayoutStyle = Txn.GetObject(CurtainWalls.Last().StyleId, OpenMode.ForRead) as CurtainWallLayoutStyle;
+			string CurtainWallLayoutStyleId = CurtainWalls.Last().StyleId.Handle.ToString();
+
+			if (!CurtainWallLayoutStyles.ContainsKey(CurtainWallLayoutStyleId))
+			{
+				CurtainWallLayoutStyles[CurtainWallLayoutStyleId] = curtainWallLayoutStyle;
+			}
+			return;
+		}
+
+		if (entityType == "window")
+		{
+			WindowStyle windowStyle = Txn.GetObject(Windows.Last().StyleId, OpenMode.ForRead) as WindowStyle;
+			string windowStyleId = Windows.Last().StyleId.Handle.ToString();
+
+			if (!WindowStyles.ContainsKey(windowStyleId))
+			{
+				WindowStyles[windowStyleId] = windowStyle;
+			}
+			return;
+		}
+
+		if (entityType == "windowAssembly")
+		{
+			WindowAssemblyStyle windowAssemblyStyle = Txn.GetObject(WindowAssembly.Last().StyleId, OpenMode.ForRead) as WindowAssemblyStyle;
+			string windowAssemblyStyleId = WindowAssembly.Last().StyleId.Handle.ToString();
+
+			if (!WindowAssemblyStyles.ContainsKey(windowAssemblyStyleId))
+			{
+				WindowAssemblyStyles[windowAssemblyStyleId] = windowAssemblyStyle;
+			}
+			return;
+		}
+
+		if (entityType == "door")
+		{
+			DoorStyle doorStyle = Txn.GetObject(Doors.Last().StyleId, OpenMode.ForRead) as DoorStyle;
+			string doorStyleId = Doors.Last().StyleId.Handle.ToString();
+
+			if (!DoorStyles.ContainsKey(doorStyleId))
+			{
+				DoorStyles[doorStyleId] = doorStyle;
+			}
+			return;
+		}
+
+		if (entityType == "opening")
+		{
+			OpeningEndcapStyle openingStyle = Txn.GetObject(Openings.Last().StyleId, OpenMode.ForRead) as OpeningEndcapStyle;
+			string openingStyleId = Openings.Last().StyleId.Handle.ToString();
+
+			if (!OpeningStyles.ContainsKey(openingStyleId))
+			{
+				OpeningStyles[openingStyleId] = openingStyle;
 			}
 			return;
 		}
@@ -514,7 +603,13 @@ public class Reader
 						"\nWindows - " + Windows.Count() +
 						"\nWindowAssembly - " + WindowAssembly.Count() +
 						"\nZones - " + Zones.Count() +
-						"\nmaterialsDictionary - " + MaterialsDictionary.Count();
+						"\nMaterialsDictionary - " + Materials.Count() +
+						"\nCurtainWallLayoutStyles " + CurtainWallLayoutStyles.Count() +
+						"\nDoorStyles " + DoorStyles.Count() +
+						"\nOpeningStyles " + OpeningStyles.Count() +
+						"\nWallStyles " + WallStyles.Count() +
+						"\nWindowStyles " + WindowStyles.Count() +
+						"\nWindowAssemblyStyles " + WindowAssemblyStyles.Count();
 		WriteTextToFile(filePath, text);
 	}
 

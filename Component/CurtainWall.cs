@@ -26,7 +26,8 @@ namespace Component
 		public string ObjectHandleId { get; set; }
 
 		public Autodesk.AutoCAD.DatabaseServices.Handle StyleHandle { get; set; }
-		public string StyleID { get; set; }
+		public string Style { get; set; }
+		public string StyleId { get; set; }
 
 		public string MaterialName { get; set; }
 
@@ -37,7 +38,6 @@ namespace Component
 		public double ReflectanceScale { get; set; }
 		public double Reflectivity { get; set; }
 		public double SelfIllumination { get; set; }
-		public string Style { get; set; }
 		public double Translucence { get; set; }
 		public double TransmittanceScale { get; set; }
 		public bool TwoSided { get; set; }

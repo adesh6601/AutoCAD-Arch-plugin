@@ -2,9 +2,9 @@
 
 namespace Component
 {
-	public class DoorwindowAssembly : ACADObject
+	public class DoorWindowAssembly : ACADObject
 	{
-		public DoorwindowAssembly() : base() { }
+		public DoorWindowAssembly() : base() { }
 
 		public int CellCount { get; set; }
 		public string Description { get; set; }

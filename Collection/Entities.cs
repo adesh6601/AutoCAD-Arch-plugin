@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 
 namespace Collection
 {
-	public class ModelData
+	public class Entities
 	{
 		public List<CurtainWallLayout> CurtainWalls { get; set; } = new List<CurtainWallLayout>();
 		public List<Door> Doors { get; set; } = new List<Door>();
@@ -20,6 +20,13 @@ namespace Collection
 		public List<Zone> Zones { get; set; } = new List<Zone>();
 		public List<Space> Spaces { get; set; } = new List<Space>();
 
-		public Dictionary<string, Material> MaterialsDictionary { get; set; } = new Dictionary<string, Material>();
+		public Dictionary<string, Material> Materials { get; set; } = new Dictionary<string, Material>();
+
+		public Dictionary<string, CurtainWallLayoutStyle> CurtainWallLayoutStyles { get; set; } = new Dictionary<string, CurtainWallLayoutStyle>();
+		public Dictionary<string, DoorStyle> DoorStyles { get; set; } = new Dictionary<string, DoorStyle>();
+		public Dictionary<string, OpeningEndcapStyle> OpeningStyles { get; set; } = new Dictionary<string, OpeningEndcapStyle>();
+		public Dictionary<string, WallStyle> WallStyles { get; set; } = new Dictionary<string, WallStyle>();
+		public Dictionary<string, WindowStyle> WindowStyles { get; set; } = new Dictionary<string, WindowStyle>();
+		public Dictionary<string, WindowAssemblyStyle> WindowAssemblyStyles { get; set; } = new Dictionary<string, WindowAssemblyStyle>();
 	}
 }

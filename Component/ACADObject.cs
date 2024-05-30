@@ -4,11 +4,6 @@ namespace Component
 {
 	public class ACADObject
 	{
-		public ACADObject()
-		{
-			Bounds = new List<Point>();
-		}
-
 		public string Name { get; set; }
 		public string DisplayName { get; set; }
 
@@ -17,7 +12,7 @@ namespace Component
 
 		public string ObjectId { get; set; }
 
-		public List<Point> Bounds { get; set; }
+		public List<Point> Bounds { get; set; } = new List<Point>();
 
 		public string Layer {  get; set; }
 		public string LayerId { get; set; }

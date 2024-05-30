@@ -49,6 +49,9 @@
     <Reference Include="AecPropDataMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AecPropDataMgd.dll</HintPath>
     </Reference>
+    <Reference Include="Component">
+      <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,7 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelData.cs" />
+    <Compile Include="ConvertedModel.cs" />
+    <Compile Include="ModelConvertor.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
