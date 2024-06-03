@@ -76,7 +76,7 @@
     <Compile Include="BlockReference.cs" />
     <Compile Include="CurtainWall.cs" />
     <Compile Include="Door.cs" />
-    <Compile Include="DoorWindowAssembly.cs" />
+    <Compile Include="WindowAssembly.cs" />
     <Compile Include="MultiViewBlockReference.cs" />
     <Compile Include="ACADObject.cs" />
     <Compile Include="Opening.cs" />

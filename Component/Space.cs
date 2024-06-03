@@ -19,6 +19,6 @@ namespace Component
 		public string HandleId { get; set; }
 
 		public Autodesk.AutoCAD.DatabaseServices.Handle StyleHandle { get; set; }
-		public string StyleID { get; set; }
+		public string StyleId { get; set; }
 	}
 }

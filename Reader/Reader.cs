@@ -21,13 +21,13 @@ public class Reader
 	public List<Opening> Openings = new List<Opening>();
 	public List<Wall> Walls = new List<Wall>();
 	public List<Window> Windows = new List<Window>();
-	public List<WindowAssembly> WindowAssembly = new List<WindowAssembly>();
+	public List<WindowAssembly> WindowAssemblies = new List<WindowAssembly>();
 
 	public List<Autodesk.AutoCAD.DatabaseServices.BlockReference> BlockReferences = new List<Autodesk.AutoCAD.DatabaseServices.BlockReference>();
 	public List<MultiViewBlockReference> MultiViewBlockReferences = new List<MultiViewBlockReference>();
 
-	public List<Zone> Zones = new List<Zone>();
 	public List<Space> Spaces = new List<Space>();
+	public List<Zone> Zones = new List<Zone>();
 
 	public Dictionary<string, Material> Materials = new Dictionary<string, Material>();
 
@@ -110,7 +110,7 @@ public class Reader
 		entities.Openings = Openings;
 		entities.Walls = Walls;
 		entities.Windows = Windows;
-		entities.WindowAssembly = WindowAssembly;
+		entities.WindowAssemblies = WindowAssemblies;
 
 		entities.BlockReferences = BlockReferences;
 		entities.MultiViewBlockReferences = MultiViewBlockReferences;
@@ -315,7 +315,7 @@ public class Reader
 
 		if (entityType == "windowAssembly")
 		{
-			WindowAssembly.Add((WindowAssembly)entity);
+			WindowAssemblies.Add((WindowAssembly)entity);
 			return;
 		}
 
@@ -396,8 +396,8 @@ public class Reader
 
 		if (entityType == "windowAssembly")
 		{
-			Material material = Txn.GetObject(WindowAssembly.Last().MaterialId, OpenMode.ForRead) as Material;
-			string materialId = WindowAssembly.Last().MaterialId.Handle.ToString();
+			Material material = Txn.GetObject(WindowAssemblies.Last().MaterialId, OpenMode.ForRead) as Material;
+			string materialId = WindowAssemblies.Last().MaterialId.Handle.ToString();
 
 			if (!Materials.ContainsKey(materialId))
 			{
@@ -519,8 +519,8 @@ public class Reader
 
 		if (entityType == "windowAssembly")
 		{
-			WindowAssemblyStyle windowAssemblyStyle = Txn.GetObject(WindowAssembly.Last().StyleId, OpenMode.ForRead) as WindowAssemblyStyle;
-			string windowAssemblyStyleId = WindowAssembly.Last().StyleId.Handle.ToString();
+			WindowAssemblyStyle windowAssemblyStyle = Txn.GetObject(WindowAssemblies.Last().StyleId, OpenMode.ForRead) as WindowAssemblyStyle;
+			string windowAssemblyStyleId = WindowAssemblies.Last().StyleId.Handle.ToString();
 
 			if (!WindowAssemblyStyles.ContainsKey(windowAssemblyStyleId))
 			{
@@ -601,7 +601,7 @@ public class Reader
 						"\nSpaces - " + Spaces.Count() +
 						"\nWalls - " + Walls.Count() +
 						"\nWindows - " + Windows.Count() +
-						"\nWindowAssembly - " + WindowAssembly.Count() +
+						"\nWindowAssembly - " + WindowAssemblies.Count() +
 						"\nZones - " + Zones.Count() +
 						"\nMaterialsDictionary - " + Materials.Count() +
 						"\nCurtainWallLayoutStyles " + CurtainWallLayoutStyles.Count() +

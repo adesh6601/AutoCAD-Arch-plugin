@@ -1,6 +1,6 @@
 ﻿using Autodesk.Aec.Arch.DatabaseServices;
 using Autodesk.AutoCAD.DatabaseServices;
-//using Component;
+using Autodesk.Aec.DatabaseServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +74,7 @@ namespace Collection
 				convertedCurtainWall.ObjectHandleId = curtainWall.Handle.ToString();
 
 				convertedCurtainWall.StyleHandle = curtainWall.StyleId.Handle;
-				convertedCurtainWall.Style = Entities.WallStyles[curtainWall.StyleId.Handle.ToString()].Name;
+				convertedCurtainWall.Style = Entities.CurtainWallLayoutStyles[curtainWall.StyleId.Handle.ToString()].Name;
 				convertedCurtainWall.StyleId = curtainWall.StyleId.ToString();
 
 				Material curtainWallMaterial = Entities.Materials[curtainWall.MaterialId.Handle.ToString()];
@@ -159,6 +159,431 @@ namespace Collection
 				convertedDoor.TwoSided = doorMaterial.TwoSided;
 
 				ConvertedEntities.Doors.Add(convertedDoor);
+			}
+		}
+
+		public void ConvertOpenings()
+		{
+			foreach (Opening opening in Entities.Openings)
+			{
+				Component.Opening convertedOpening = new Component.Opening();
+
+				//convertedOpening.Name = 
+				convertedOpening.DisplayName = opening.DisplayName;
+
+				convertedOpening.BlockName = opening.BlockName;
+				convertedOpening.BlockId = opening.BlockId.ToString();
+
+				convertedOpening.ObjectId = opening.ObjectId.ToString();
+
+				convertedOpening.Bounds.Add(new Component.Point(opening.Bounds.Value.MaxPoint.X, opening.Bounds.Value.MaxPoint.Y, opening.Bounds.Value.MaxPoint.Z));
+				convertedOpening.Bounds.Add(new Component.Point(opening.Bounds.Value.MinPoint.X, opening.Bounds.Value.MinPoint.Y, opening.Bounds.Value.MinPoint.Z));
+
+				convertedOpening.Layer = opening.Layer;
+				convertedOpening.LayerId = opening.LayerId.ToString();
+
+				convertedOpening.MaterialHandle = opening.MaterialId.Handle;
+				convertedOpening.MaterialId = opening.MaterialId.ToString();
+
+				convertedOpening.Color = opening.Color;
+
+				convertedOpening.ShapeType = opening.ShapeType.ToString();
+				convertedOpening.LineTypeID = opening.LinetypeId.ToString();
+				//convertedOpening.WallId = 
+
+				convertedOpening.Width = opening.Width;
+				convertedOpening.Height = opening.Height;
+				convertedOpening.Area = opening.Area;
+
+				convertedOpening.StartPoint = new Component.Point(opening.StartPoint.X, opening.StartPoint.Y, opening.StartPoint.Z);
+				convertedOpening.EndPoint = new Component.Point(opening.EndPoint.X, opening.EndPoint.Y, opening.EndPoint.Z);
+
+				convertedOpening.Normal = new Component.Point(opening.Normal.X, opening.Normal.Y, opening.Normal.Z);
+				//convertedOpening.Offset = door.
+
+				convertedOpening.CollisionType = opening.CollisionType.ToString();
+
+				convertedOpening.Handle = opening.Handle;
+				convertedOpening.HandleId = opening.Handle.ToString();
+
+				ConvertedEntities.Openings.Add(convertedOpening);
+			}
+		}
+	
+		public void ConvertWalls()
+		{
+			foreach (Wall wall in Entities.Walls)
+			{
+				Component.Wall convertedWall = new Component.Wall();
+
+				//convertedWall.Name = 
+				convertedWall.DisplayName = wall.DisplayName;
+
+				convertedWall.BlockName = wall.BlockName;
+				convertedWall.BlockId = wall.BlockId.ToString();
+
+				convertedWall.ObjectId = wall.ObjectId.ToString();
+
+				convertedWall.Bounds.Add(new Component.Point(wall.Bounds.Value.MaxPoint.X, wall.Bounds.Value.MaxPoint.Y, wall.Bounds.Value.MaxPoint.Z));
+				convertedWall.Bounds.Add(new Component.Point(wall.Bounds.Value.MinPoint.X, wall.Bounds.Value.MinPoint.Y, wall.Bounds.Value.MinPoint.Z));
+
+				convertedWall.Layer = wall.Layer;
+				convertedWall.LayerId = wall.LayerId.ToString();
+
+				convertedWall.MaterialHandle = wall.MaterialId.Handle;
+				convertedWall.MaterialId = wall.MaterialId.ToString();
+
+				convertedWall.Color = wall.Color;
+
+				convertedWall.Description = wall.Description;
+
+				convertedWall.Length = wall.Length;
+				convertedWall.Width = wall.Width; 
+				convertedWall.BaseHeight = wall.BaseHeight;
+				//convertedWall.Area = 
+
+				convertedWall.StartPoint = new Component.Point(wall.StartPoint.X, wall.StartPoint.Y, wall.StartPoint.Z);
+				convertedWall.EndPoint = new Component.Point(wall.EndPoint.X, wall.EndPoint.Y, wall.EndPoint.Z);
+
+				//convertedWall.Rotation = 
+
+				convertedWall.CollisionType = wall.CollisionType.ToString();
+
+				convertedWall.ObjectHandle = wall.Handle;
+				convertedWall.ObjectHandleId = wall.Handle.ToString();
+
+				convertedWall.StyleHandle = wall.StyleId.Handle;
+				convertedWall.Style = Entities.WallStyles[wall.StyleId.Handle.ToString()].Name;
+				convertedWall.StyleId = wall.StyleId.ToString();
+
+				Material wallMaterial = Entities.Materials[wall.MaterialId.Handle.ToString()];
+
+				convertedWall.MaterialName = wallMaterial.Name;
+
+				convertedWall.Ambient = wallMaterial.Ambient;
+				convertedWall.ColorBleedScale = wallMaterial.ColorBleedScale;
+				convertedWall.IndirectBumpScale = wallMaterial.IndirectBumpScale;
+				convertedWall.Luminance = wallMaterial.Luminance;
+				convertedWall.ReflectanceScale = wallMaterial.ReflectanceScale;
+				convertedWall.Reflectivity = wallMaterial.Reflectivity;
+				convertedWall.SelfIllumination = wallMaterial.SelfIllumination;
+				convertedWall.Translucence = wallMaterial.Translucence;
+				convertedWall.TransmittanceScale = wallMaterial.TransmittanceScale;
+				convertedWall.TwoSided = wallMaterial.TwoSided;
+
+				ConvertedEntities.Walls.Add(convertedWall);
+			}
+		}
+
+		public void ConvertWindows()
+		{
+			foreach (Window window in Entities.Windows)
+			{
+				Component.Window convertedWindow = new Component.Window();
+
+				//convertedWall.Name = 
+				convertedWindow.DisplayName = window.DisplayName;
+
+				convertedWindow.BlockName = window.BlockName;
+				convertedWindow.BlockId = window.BlockId.ToString();
+
+				convertedWindow.ObjectId = window.ObjectId.ToString();
+
+				convertedWindow.Bounds.Add(new Component.Point(window.Bounds.Value.MaxPoint.X, window.Bounds.Value.MaxPoint.Y, window.Bounds.Value.MaxPoint.Z));
+				convertedWindow.Bounds.Add(new Component.Point(window.Bounds.Value.MinPoint.X, window.Bounds.Value.MinPoint.Y, window.Bounds.Value.MinPoint.Z));
+
+				convertedWindow.Layer = window.Layer;
+				convertedWindow.LayerId = window.LayerId.ToString();
+
+				convertedWindow.MaterialHandle = window.MaterialId.Handle;
+				convertedWindow.MaterialId = window.MaterialId.ToString();
+
+				convertedWindow.Color = window.Color;
+
+				convertedWindow.Description = window.Description;
+				//convertedWindow.WallId =
+
+				convertedWindow.Width = window.Width;
+				convertedWindow.Height = window.Height;
+				convertedWindow.Area = window.Area;
+
+				convertedWindow.StartPoint = new Component.Point(window.StartPoint.X, window.StartPoint.Y, window.StartPoint.Z);
+				convertedWindow.EndPoint = new Component.Point(window.EndPoint.X, window.EndPoint.Y, window.EndPoint.Z);
+
+				convertedWindow.Normal = new Component.Point(window.Normal.X, window.Normal.Y, window.Normal.Z); ;
+				convertedWindow.Altitude = window.StartPoint.Z;
+				//convertedWindow.Offset = ;
+
+				convertedWindow.CollisionType = window.CollisionType.ToString();
+
+				convertedWindow.Handle = window.Handle;
+				convertedWindow.HandleId = window.Handle.ToString();
+
+				convertedWindow.StyleHandle = window.StyleId.Handle;
+				convertedWindow.Style = Entities.WindowStyles[window.StyleId.Handle.ToString()].Name;
+				convertedWindow.StyleId = window.StyleId.ToString();
+
+				Material wallMaterial = Entities.Materials[window.MaterialId.Handle.ToString()];
+
+				convertedWindow.MaterialName = wallMaterial.Name;
+
+				convertedWindow.Ambient = wallMaterial.Ambient;
+				convertedWindow.ColorBleedScale = wallMaterial.ColorBleedScale;
+				convertedWindow.IndirectBumpScale = wallMaterial.IndirectBumpScale;
+				convertedWindow.Luminance = wallMaterial.Luminance;
+				convertedWindow.ReflectanceScale = wallMaterial.ReflectanceScale;
+				convertedWindow.Reflectivity = wallMaterial.Reflectivity;
+				convertedWindow.SelfIllumination = wallMaterial.SelfIllumination;
+				convertedWindow.Translucence = wallMaterial.Translucence;
+				convertedWindow.TransmittanceScale = wallMaterial.TransmittanceScale;
+				convertedWindow.TwoSided = wallMaterial.TwoSided;
+
+				ConvertedEntities.Windows.Add(convertedWindow);
+			}
+		}
+
+		public void ConvertWindowAssemblies()
+		{
+			foreach (WindowAssembly windowAssembly in Entities.WindowAssemblies)
+			{
+				Component.WindowAssembly convertedWindowAssembly = new Component.WindowAssembly();
+
+				//convertedWindowAssembly.Name = 
+				convertedWindowAssembly.DisplayName = windowAssembly.DisplayName;
+
+				convertedWindowAssembly.BlockName = windowAssembly.BlockName;
+				convertedWindowAssembly.BlockId = windowAssembly.BlockId.ToString();
+
+				convertedWindowAssembly.ObjectId = windowAssembly.ObjectId.ToString();
+
+				convertedWindowAssembly.Bounds.Add(new Component.Point(windowAssembly.Bounds.Value.MaxPoint.X, windowAssembly.Bounds.Value.MaxPoint.Y, windowAssembly.Bounds.Value.MaxPoint.Z));
+				convertedWindowAssembly.Bounds.Add(new Component.Point(windowAssembly.Bounds.Value.MinPoint.X, windowAssembly.Bounds.Value.MinPoint.Y, windowAssembly.Bounds.Value.MinPoint.Z));
+
+				convertedWindowAssembly.Layer = windowAssembly.Layer;
+				convertedWindowAssembly.LayerId = windowAssembly.LayerId.ToString();
+
+				convertedWindowAssembly.MaterialHandle = windowAssembly.MaterialId.Handle;
+				convertedWindowAssembly.MaterialId = windowAssembly.MaterialId.ToString();
+
+				convertedWindowAssembly.Color = windowAssembly.Color;
+
+				convertedWindowAssembly.CellCount = windowAssembly.CellCount;
+				convertedWindowAssembly.Description = windowAssembly.Description;
+				//convertedWindowAssembly.WallId =
+
+				convertedWindowAssembly.Length = windowAssembly.Length;
+				convertedWindowAssembly.Height = windowAssembly.Height;
+				convertedWindowAssembly.Area = windowAssembly.Area;
+
+				convertedWindowAssembly.StartPoint = new Component.Point(windowAssembly.StartPoint.X, windowAssembly.StartPoint.Y, windowAssembly.StartPoint.Z);
+				convertedWindowAssembly.EndPoint = new Component.Point(windowAssembly.EndPoint.X, windowAssembly.EndPoint.Y, windowAssembly.EndPoint.Z);
+
+				convertedWindowAssembly.Normal = new Component.Point(windowAssembly.Normal.X, windowAssembly.Normal.Y, windowAssembly.Normal.Z); ;
+				//convertedWindowAssembly.Offset = ;
+
+				convertedWindowAssembly.CollisionType = windowAssembly.CollisionType.ToString();
+
+				convertedWindowAssembly.Handle = windowAssembly.Handle;
+				convertedWindowAssembly.HandleId = windowAssembly.Handle.ToString();
+
+				convertedWindowAssembly.StyleHandle = windowAssembly.StyleId.Handle;
+				convertedWindowAssembly.Style = Entities.WindowStyles[windowAssembly.StyleId.Handle.ToString()].Name;
+				convertedWindowAssembly.StyleId = windowAssembly.StyleId.ToString();
+
+				Material wallMaterial = Entities.Materials[windowAssembly.MaterialId.Handle.ToString()];
+
+				convertedWindowAssembly.MaterialName = wallMaterial.Name;
+
+				convertedWindowAssembly.Ambient = wallMaterial.Ambient;
+				convertedWindowAssembly.ColorBleedScale = wallMaterial.ColorBleedScale;
+				convertedWindowAssembly.IndirectBumpScale = wallMaterial.IndirectBumpScale;
+				convertedWindowAssembly.Luminance = wallMaterial.Luminance;
+				convertedWindowAssembly.ReflectanceScale = wallMaterial.ReflectanceScale;
+				convertedWindowAssembly.Reflectivity = wallMaterial.Reflectivity;
+				convertedWindowAssembly.SelfIllumination = wallMaterial.SelfIllumination;
+				convertedWindowAssembly.Translucence = wallMaterial.Translucence;
+				convertedWindowAssembly.TransmittanceScale = wallMaterial.TransmittanceScale;
+				convertedWindowAssembly.TwoSided = wallMaterial.TwoSided;
+
+				ConvertedEntities.WindowAssemblies.Add(convertedWindowAssembly);
+			}
+		}
+
+		public void ConvertBlockReferences()
+		{
+			foreach (Autodesk.AutoCAD.DatabaseServices.BlockReference blockReference in Entities.BlockReferences)
+			{
+				Component.BlockReference convertedBlockReference = new Component.BlockReference();
+
+				//convertedBlockReference.Name = 
+				convertedBlockReference.DisplayName = blockReference.Name;
+
+				convertedBlockReference.BlockName = blockReference.BlockName;
+				convertedBlockReference.BlockId = blockReference.BlockId.ToString();
+
+				convertedBlockReference.ObjectId = blockReference.ObjectId.ToString();
+
+				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MaxPoint.X, blockReference.Bounds.Value.MaxPoint.Y, blockReference.Bounds.Value.MaxPoint.Z));
+				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MinPoint.X, blockReference.Bounds.Value.MinPoint.Y, blockReference.Bounds.Value.MinPoint.Z));
+
+				convertedBlockReference.Layer = blockReference.Layer;
+				convertedBlockReference.LayerId = blockReference.LayerId.ToString();
+
+				convertedBlockReference.MaterialHandle = blockReference.MaterialId.Handle;
+				convertedBlockReference.MaterialId = blockReference.MaterialId.ToString();
+
+				convertedBlockReference.Color = blockReference.Color;
+
+				//convertedBlockReference.Length = ;
+				//convertedBlockReference.Width = 
+				//convertedBlockReference.BaseHeight = ;
+				//convertedBlockReference.Area = ;
+
+				convertedBlockReference.Position = new Component.Point(blockReference.Position.X, blockReference.Position.Y, blockReference.Position.Z);
+				convertedBlockReference.Rotation = blockReference.Rotation;
+
+				convertedBlockReference.ScaleFactor = new Component.Point(blockReference.ScaleFactors.X, blockReference.ScaleFactors.Y, blockReference.ScaleFactors.Z); ;
+
+				convertedBlockReference.Handle = blockReference.Handle;
+				convertedBlockReference.HandleId = blockReference.Handle.ToString();
+
+				ConvertedEntities.BlockReferences.Add(convertedBlockReference);
+			}
+		}
+
+		public void ConvertMultiViewBlockReferences()
+		{
+			foreach (MultiViewBlockReference multiViewBlockReference in Entities.MultiViewBlockReferences)
+			{
+				Component.MultiViewBlockReference convertedMultiViewBlockReference = new Component.MultiViewBlockReference();
+
+				//convertedMultiViewBlockReference.Name = 
+				convertedMultiViewBlockReference.DisplayName = multiViewBlockReference.DisplayName;
+
+				convertedMultiViewBlockReference.BlockName = multiViewBlockReference.BlockName;
+				convertedMultiViewBlockReference.BlockId = multiViewBlockReference.BlockId.ToString();
+
+				convertedMultiViewBlockReference.ObjectId = multiViewBlockReference.ObjectId.ToString();
+
+				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MaxPoint.X, multiViewBlockReference.Bounds.Value.MaxPoint.Y, multiViewBlockReference.Bounds.Value.MaxPoint.Z));
+				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MinPoint.X, multiViewBlockReference.Bounds.Value.MinPoint.Y, multiViewBlockReference.Bounds.Value.MinPoint.Z));
+
+				convertedMultiViewBlockReference.Layer = multiViewBlockReference.Layer;
+				convertedMultiViewBlockReference.LayerId = multiViewBlockReference.LayerId.ToString();
+
+				convertedMultiViewBlockReference.MaterialHandle = multiViewBlockReference.MaterialId.Handle;
+				convertedMultiViewBlockReference.MaterialId = multiViewBlockReference.MaterialId.ToString();
+
+				convertedMultiViewBlockReference.Color = multiViewBlockReference.Color;
+
+				//convertedMultiViewBlockReference.Length = 
+				//convertedMultiViewBlockReference.Width = 
+				//convertedMultiViewBlockReference.BaseHeight = 
+				//convertedMultiViewBlockReference.Area = 
+
+				convertedMultiViewBlockReference.StartPoint = new Component.Point(multiViewBlockReference.StartPoint.X, multiViewBlockReference.StartPoint.Y, multiViewBlockReference.StartPoint.Z);
+				convertedMultiViewBlockReference.EndPoint = new Component.Point(multiViewBlockReference.EndPoint.X, multiViewBlockReference.EndPoint.Y, multiViewBlockReference.EndPoint.Z);
+
+				convertedMultiViewBlockReference.Rotation = multiViewBlockReference.Rotation;
+
+				convertedMultiViewBlockReference.Handle = multiViewBlockReference.Handle;
+				convertedMultiViewBlockReference.HandleId = multiViewBlockReference.Handle.ToString();
+
+				convertedMultiViewBlockReference.StyleHandle = multiViewBlockReference.StyleId.Handle;
+				convertedMultiViewBlockReference.StyleId = multiViewBlockReference.StyleId.ToString();
+
+				ConvertedEntities.MultiViewBlockReferences.Add(convertedMultiViewBlockReference);
+			}
+		}
+
+		public void ConvertSpaces()
+		{
+			foreach (Space space in Entities.Spaces)
+			{
+				Component.Space convertedSpace= new Component.Space();
+
+				//convertedSpace.Name = 
+				convertedSpace.DisplayName = space.DisplayName;
+
+				convertedSpace.BlockName = space.BlockName;
+				convertedSpace.BlockId = space.BlockId.ToString();
+
+				convertedSpace.ObjectId = space.ObjectId.ToString();
+
+				convertedSpace.Bounds.Add(new Component.Point(space.Bounds.Value.MaxPoint.X, space.Bounds.Value.MaxPoint.Y, space.Bounds.Value.MaxPoint.Z));
+				convertedSpace.Bounds.Add(new Component.Point(space.Bounds.Value.MinPoint.X, space.Bounds.Value.MinPoint.Y, space.Bounds.Value.MinPoint.Z));
+
+				convertedSpace.Layer = space.Layer;
+				convertedSpace.LayerId = space.LayerId.ToString();
+
+				convertedSpace.MaterialHandle = space.MaterialId.Handle;
+				convertedSpace.MaterialId = space.MaterialId.ToString();
+
+				convertedSpace.Color = space.Color;
+
+				convertedSpace.Area = space.Area;
+
+				convertedSpace.StartPoint = new Component.Point(space.StartPoint.X, space.StartPoint.Y, space.StartPoint.Z);
+				convertedSpace.EndPoint = new Component.Point(space.EndPoint.X, space.EndPoint.Y, space.EndPoint.Z);
+
+				//convertedSpace.Walls =
+				//convertedSpace.Surfaces =
+				//convertedSpace.TranslatedSurfaces =
+
+				convertedSpace.Handle = space.Handle;
+				convertedSpace.HandleId = space.Handle.ToString();
+
+				convertedSpace.StyleHandle = space.StyleId.Handle;
+				convertedSpace.StyleId = space.StyleId.ToString();
+
+				ConvertedEntities.Spaces.Add(convertedSpace);
+			}
+		}
+
+		public void ConvertZones()
+		{
+			foreach (Zone zone in Entities.Zones)
+			{
+				Component.Zone convertedZone= new Component.Zone();
+
+				//convertedZone.Name = 
+				convertedZone.DisplayName = zone.DisplayName;
+
+				convertedZone.BlockName = zone.BlockName;
+				convertedZone.BlockId = zone.BlockId.ToString();
+
+				convertedZone.ObjectId = zone.ObjectId.ToString();
+
+				convertedZone.Bounds.Add(new Component.Point(zone.Bounds.Value.MaxPoint.X, zone.Bounds.Value.MaxPoint.Y, zone.Bounds.Value.MaxPoint.Z));
+				convertedZone.Bounds.Add(new Component.Point(zone.Bounds.Value.MinPoint.X, zone.Bounds.Value.MinPoint.Y, zone.Bounds.Value.MinPoint.Z));
+
+				convertedZone.Layer = zone.Layer;
+				convertedZone.LayerId = zone.LayerId.ToString();
+
+				convertedZone.MaterialHandle = zone.MaterialId.Handle;
+				convertedZone.MaterialId = zone.MaterialId.ToString();
+
+				convertedZone.Color = zone.Color;
+
+				convertedZone.Area = zone.Area;
+
+				convertedZone.StartPoint = new Component.Point(zone.StartPoint.X, zone.StartPoint.Y, zone.StartPoint.Z);
+				convertedZone.EndPoint = new Component.Point(zone.EndPoint.X, zone.EndPoint.Y, zone.EndPoint.Z);
+
+				convertedZone.TotalNumberOfSpaces = zone.TotalNumberOfSpaces;
+				convertedZone.TotalNumberOfZones = zone.TotalNumberOfZones;
+
+				//convertedZone.Spaces = 
+				//convertedZone.SpaceIds =
+				//convertedZone.ZoneIds =
+
+				convertedZone.Handle = zone.Handle;
+				convertedZone.HandleId = zone.Handle.ToString();
+
+				convertedZone.StyleHandle = zone.StyleId.Handle;
+				convertedZone.StyleId = zone.StyleId.ToString();
+
+				ConvertedEntities.Zones.Add(convertedZone);
 			}
 		}
 	}
