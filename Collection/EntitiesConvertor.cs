@@ -35,7 +35,6 @@ namespace Collection
 			{
 				Component.CurtainWall convertedCurtainWall = new Component.CurtainWall();
 
-				//convertedCurtainWall.Name = 
 				convertedCurtainWall.DisplayName = curtainWall.DisplayName;
 
 				convertedCurtainWall.BlockName = curtainWall.BlockName;
@@ -102,7 +101,6 @@ namespace Collection
 			{
 				Component.Door convertedDoor = new Component.Door();
 
-				//convertedDoor.Name = 
 				convertedDoor.DisplayName = door.DisplayName;
 
 				convertedDoor.BlockName = door.BlockName;
@@ -132,7 +130,7 @@ namespace Collection
 				convertedDoor.EndPoint = new Component.Point(door.EndPoint.X, door.EndPoint.Y, door.EndPoint.Z);
 
 				convertedDoor.Normal = new Component.Point(door.Normal.X, door.Normal.Y, door.Normal.Z);
-				//convertedDoor.Offset = door.
+				//convertedDoor.Offset = 
 
 				convertedDoor.CollisionType = door.CollisionType.ToString();
 
@@ -168,7 +166,6 @@ namespace Collection
 			{
 				Component.Opening convertedOpening = new Component.Opening();
 
-				//convertedOpening.Name = 
 				convertedOpening.DisplayName = opening.DisplayName;
 
 				convertedOpening.BlockName = opening.BlockName;
@@ -199,7 +196,7 @@ namespace Collection
 				convertedOpening.EndPoint = new Component.Point(opening.EndPoint.X, opening.EndPoint.Y, opening.EndPoint.Z);
 
 				convertedOpening.Normal = new Component.Point(opening.Normal.X, opening.Normal.Y, opening.Normal.Z);
-				//convertedOpening.Offset = door.
+				//convertedOpening.Offset = 
 
 				convertedOpening.CollisionType = opening.CollisionType.ToString();
 
@@ -216,7 +213,6 @@ namespace Collection
 			{
 				Component.Wall convertedWall = new Component.Wall();
 
-				//convertedWall.Name = 
 				convertedWall.DisplayName = wall.DisplayName;
 
 				convertedWall.BlockName = wall.BlockName;
@@ -281,7 +277,6 @@ namespace Collection
 			{
 				Component.Window convertedWindow = new Component.Window();
 
-				//convertedWall.Name = 
 				convertedWindow.DisplayName = window.DisplayName;
 
 				convertedWindow.BlockName = window.BlockName;
@@ -301,7 +296,7 @@ namespace Collection
 				convertedWindow.Color = window.Color;
 
 				convertedWindow.Description = window.Description;
-				//convertedWindow.WallId =
+				//convertedWindow.WallId = 
 
 				convertedWindow.Width = window.Width;
 				convertedWindow.Height = window.Height;
@@ -312,7 +307,7 @@ namespace Collection
 
 				convertedWindow.Normal = new Component.Point(window.Normal.X, window.Normal.Y, window.Normal.Z); ;
 				convertedWindow.Altitude = window.StartPoint.Z;
-				//convertedWindow.Offset = ;
+				//convertedWindow.Offset = 
 
 				convertedWindow.CollisionType = window.CollisionType.ToString();
 
@@ -348,7 +343,6 @@ namespace Collection
 			{
 				Component.WindowAssembly convertedWindowAssembly = new Component.WindowAssembly();
 
-				//convertedWindowAssembly.Name = 
 				convertedWindowAssembly.DisplayName = windowAssembly.DisplayName;
 
 				convertedWindowAssembly.BlockName = windowAssembly.BlockName;
@@ -369,7 +363,7 @@ namespace Collection
 
 				convertedWindowAssembly.CellCount = windowAssembly.CellCount;
 				convertedWindowAssembly.Description = windowAssembly.Description;
-				//convertedWindowAssembly.WallId =
+				//convertedWindowAssembly.WallId = 
 
 				convertedWindowAssembly.Length = windowAssembly.Length;
 				convertedWindowAssembly.Height = windowAssembly.Height;
@@ -379,7 +373,7 @@ namespace Collection
 				convertedWindowAssembly.EndPoint = new Component.Point(windowAssembly.EndPoint.X, windowAssembly.EndPoint.Y, windowAssembly.EndPoint.Z);
 
 				convertedWindowAssembly.Normal = new Component.Point(windowAssembly.Normal.X, windowAssembly.Normal.Y, windowAssembly.Normal.Z); ;
-				//convertedWindowAssembly.Offset = ;
+				//convertedWindowAssembly.Offset = 
 
 				convertedWindowAssembly.CollisionType = windowAssembly.CollisionType.ToString();
 
@@ -415,7 +409,6 @@ namespace Collection
 			{
 				Component.BlockReference convertedBlockReference = new Component.BlockReference();
 
-				//convertedBlockReference.Name = 
 				convertedBlockReference.DisplayName = blockReference.Name;
 
 				convertedBlockReference.BlockName = blockReference.BlockName;
@@ -434,10 +427,10 @@ namespace Collection
 
 				convertedBlockReference.Color = blockReference.Color;
 
-				//convertedBlockReference.Length = ;
+				//convertedBlockReference.Length = 
 				//convertedBlockReference.Width = 
-				//convertedBlockReference.BaseHeight = ;
-				//convertedBlockReference.Area = ;
+				//convertedBlockReference.BaseHeight = 
+				//convertedBlockReference.Area = 
 
 				convertedBlockReference.Position = new Component.Point(blockReference.Position.X, blockReference.Position.Y, blockReference.Position.Z);
 				convertedBlockReference.Rotation = blockReference.Rotation;
@@ -457,7 +450,6 @@ namespace Collection
 			{
 				Component.MultiViewBlockReference convertedMultiViewBlockReference = new Component.MultiViewBlockReference();
 
-				//convertedMultiViewBlockReference.Name = 
 				convertedMultiViewBlockReference.DisplayName = multiViewBlockReference.DisplayName;
 
 				convertedMultiViewBlockReference.BlockName = multiViewBlockReference.BlockName;
@@ -502,7 +494,6 @@ namespace Collection
 			{
 				Component.Space convertedSpace= new Component.Space();
 
-				//convertedSpace.Name = 
 				convertedSpace.DisplayName = space.DisplayName;
 
 				convertedSpace.BlockName = space.BlockName;
@@ -526,9 +517,9 @@ namespace Collection
 				convertedSpace.StartPoint = new Component.Point(space.StartPoint.X, space.StartPoint.Y, space.StartPoint.Z);
 				convertedSpace.EndPoint = new Component.Point(space.EndPoint.X, space.EndPoint.Y, space.EndPoint.Z);
 
-				//convertedSpace.Walls =
-				//convertedSpace.Surfaces =
-				//convertedSpace.TranslatedSurfaces =
+				//convertedSpace.Walls = 
+				//convertedSpace.Surfaces = 
+				//convertedSpace.TranslatedSurfaces = 
 
 				convertedSpace.Handle = space.Handle;
 				convertedSpace.HandleId = space.Handle.ToString();
@@ -546,7 +537,6 @@ namespace Collection
 			{
 				Component.Zone convertedZone= new Component.Zone();
 
-				//convertedZone.Name = 
 				convertedZone.DisplayName = zone.DisplayName;
 
 				convertedZone.BlockName = zone.BlockName;
