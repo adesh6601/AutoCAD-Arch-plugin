@@ -1,4 +1,6 @@
-﻿namespace Component
+﻿using Autodesk.AutoCAD.DatabaseServices;
+
+namespace Component
 {
     public class MultiViewBlockReference : ACADObject
     {
@@ -14,10 +16,10 @@
 
 		public double Rotation { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle Handle { get; set; }
+		public Handle Handle { get; set; }
 		public string HandleId { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle StyleHandle { get; set; }
+		public Handle StyleHandle { get; set; }
 		public string StyleId { get; set; }
 	}
 }

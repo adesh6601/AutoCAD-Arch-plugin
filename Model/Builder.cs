@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public class ModelConvertor
+	public class Builder
 	{
-		public ConvertedModel ConvertModel(Model modelData)
-		{
-			return null;
-		}
+		public Builder() { }
 
 
 	}

@@ -1,4 +1,5 @@
-﻿using Autodesk.AutoCAD.GraphicsInterface;
+﻿using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Component
 {
@@ -22,10 +23,10 @@ namespace Component
 
 		public string CollisionType { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle Handle { get; set; }
+		public Handle Handle { get; set; }
 		public string HandleId { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle StyleHandle { get; set; }
+		public Handle StyleHandle { get; set; }
 		public string Style { get; set; }
 		public string StyleId { get; set; }
 

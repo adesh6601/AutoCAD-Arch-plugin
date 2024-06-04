@@ -1,4 +1,6 @@
-﻿namespace Component
+﻿using Autodesk.AutoCAD.DatabaseServices;
+
+namespace Component
 {
 	public class Opening : ACADObject
 	{
@@ -20,7 +22,7 @@
 
 		public string CollisionType { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle Handle { get; set; }
+		public Handle Handle { get; set; }
 		public string HandleId { get; set; }
 	}
 }

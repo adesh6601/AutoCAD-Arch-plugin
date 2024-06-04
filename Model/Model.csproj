@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1B3D502-CBD8-4F36-A3BD-DF5BD6662347}</ProjectGuid>
+    <ProjectGuid>{54B39D8A-BFC2-4314-AF67-A3ABBA7882B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Model</RootNamespace>
@@ -34,23 +34,39 @@
     <Reference Include="AcCoreMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AcCoreMgd.dll</HintPath>
     </Reference>
+    <Reference Include="AcCui">
+      <HintPath>..\Reader\bin\Debug\External-dll\AcCui.dll</HintPath>
+    </Reference>
     <Reference Include="AcDbMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AcDbMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AcMgd.dll</HintPath>
     </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\Reader\bin\Debug\External-dll\AdWindows.dll</HintPath>
+    </Reference>
     <Reference Include="AecArchMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecArchMgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecArchMgd.dll</HintPath>
     </Reference>
     <Reference Include="AecBaseMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecBaseMgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecBaseMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AecProjectBaseMgd">
+      <HintPath>..\Reader\bin\Debug\External-dll\AecProjectBaseMgd.dll</HintPath>
     </Reference>
     <Reference Include="AecPropDataMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AecPropDataMgd.dll</HintPath>
     </Reference>
+    <Reference Include="Collection">
+      <HintPath>..\Collection\bin\Debug\Collection.dll</HintPath>
+    </Reference>
     <Reference Include="Component">
       <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reader\bin\Debug\External-dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,9 +78,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertedModel.cs" />
-    <Compile Include="ModelConvertor.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="Builder.cs" />
+    <Compile Include="Building.cs" />
+    <Compile Include="Floor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

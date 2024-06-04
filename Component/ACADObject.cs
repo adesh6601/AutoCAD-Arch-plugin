@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Autodesk.AutoCAD.DatabaseServices;
 
 namespace Component
 {
@@ -16,7 +17,7 @@ namespace Component
 		public string Layer {  get; set; }
 		public string LayerId { get; set; }
 
-		public Autodesk.AutoCAD.DatabaseServices.Handle MaterialHandle { get; set; }
+		public Handle MaterialHandle { get; set; }
 		public string MaterialId { get; set; }
 
 		public Autodesk.AutoCAD.Colors.Color Color { get; set; }

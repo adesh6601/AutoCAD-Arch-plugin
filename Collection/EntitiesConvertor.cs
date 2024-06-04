@@ -1,13 +1,6 @@
 ﻿using Autodesk.Aec.Arch.DatabaseServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Aec.DatabaseServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Collection
 {
