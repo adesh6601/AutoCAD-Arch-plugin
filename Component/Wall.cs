@@ -5,8 +5,6 @@ namespace Component
 {
 	public class Wall : ACADObject
 	{
-		public Wall() : base() { }
-
 		public string Description { get; set; }
 		
 		public double Length { get; set; }
@@ -40,5 +38,8 @@ namespace Component
 		public double Translucence { get; set; }
 		public double TransmittanceScale { get; set; }
 		public bool TwoSided { get; set; }
+
+
+		public Wall() : base() { }
 	}
 }

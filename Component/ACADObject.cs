@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 
 namespace Component
@@ -20,6 +21,6 @@ namespace Component
 		public Handle MaterialHandle { get; set; }
 		public string MaterialId { get; set; }
 
-		public Autodesk.AutoCAD.Colors.Color Color { get; set; }
+		public Color Color { get; set; }
 	}
 }

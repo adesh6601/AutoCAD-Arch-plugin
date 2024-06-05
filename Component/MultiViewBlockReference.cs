@@ -4,8 +4,6 @@ namespace Component
 {
     public class MultiViewBlockReference : ACADObject
     {
-        public MultiViewBlockReference() : base() { }
-
 		public double Length { get; set; }
 		public double Width { get; set; }
 		public double BaseHeight { get; set; }
@@ -21,5 +19,8 @@ namespace Component
 
 		public Handle StyleHandle { get; set; }
 		public string StyleId { get; set; }
+
+
+		public MultiViewBlockReference() : base() { }
 	}
 }

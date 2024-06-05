@@ -5,8 +5,6 @@ namespace Component
 {
 	public class Zone : ACADObject
 	{
-		public Zone() : base() { }
-
 		public double Area { get; set; }
 
 		public Point StartPoint { get; set; }
@@ -24,5 +22,8 @@ namespace Component
 
 		public Handle StyleHandle { get; set; }
 		public string StyleId { get; set; }
+
+
+		public Zone() : base() { }
 	}
 }

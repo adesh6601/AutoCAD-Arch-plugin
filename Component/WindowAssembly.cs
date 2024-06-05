@@ -5,8 +5,6 @@ namespace Component
 {
 	public class WindowAssembly : ACADObject
 	{
-		public WindowAssembly() : base() { }
-
 		public int CellCount { get; set; }
 		public string Description { get; set; }
 		public string WallId { get; set; }
@@ -42,5 +40,8 @@ namespace Component
 		public double Translucence { get; set; }
 		public double TransmittanceScale { get; set; }
 		public bool TwoSided { get; set; }
+
+
+		public WindowAssembly() : base() { }
 	}
 }

@@ -4,8 +4,6 @@ namespace Component
 {
 	public class Opening : ACADObject
 	{
-		public Opening() : base() { }
-
 		public string ShapeType { get; set; }
 		public string LineTypeID { get; set; }
 		public string WallId { get; set; }
@@ -24,5 +22,8 @@ namespace Component
 
 		public Handle Handle { get; set; }
 		public string HandleId { get; set; }
+
+
+		public Opening() : base() { }
 	}
 }

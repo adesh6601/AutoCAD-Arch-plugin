@@ -4,8 +4,6 @@ namespace Component
 {
     public class BlockReference : ACADObject
     {
-        public BlockReference() : base() { }
-
 		public double Length { get; set; }
 		public double Width { get; set; }
 		public double BaseHeight { get; set; }
@@ -18,5 +16,8 @@ namespace Component
 
 		public Handle Handle { get; set; }
 		public string HandleId { get; set; }
+
+
+        public BlockReference() : base() { }
 	}
 }
