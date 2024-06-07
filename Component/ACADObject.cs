@@ -15,6 +15,9 @@ namespace Component
 
 		public List<Point> Bounds { get; set; } = new List<Point>();
 
+		public Handle Handle { get; set; }
+		public string HandleId { get; set; }
+
 		public string Layer {  get; set; }
 		public string LayerId { get; set; }
 

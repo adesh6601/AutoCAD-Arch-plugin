@@ -14,9 +14,6 @@ namespace Component
 
 		public Point ScaleFactor { get; set; }
 
-		public Handle Handle { get; set; }
-		public string HandleId { get; set; }
-
 
         public BlockReference() : base() { }
 	}

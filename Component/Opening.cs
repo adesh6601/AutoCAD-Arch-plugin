@@ -20,9 +20,6 @@ namespace Component
 
 		public string CollisionType { get; set; }
 
-		public Handle Handle { get; set; }
-		public string HandleId { get; set; }
-
 
 		public Opening() : base() { }
 	}

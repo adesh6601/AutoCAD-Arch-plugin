@@ -38,6 +38,9 @@ namespace Collection
 				convertedCurtainWall.Bounds.Add(new Component.Point(curtainWall.Bounds.Value.MaxPoint.X, curtainWall.Bounds.Value.MaxPoint.Y, curtainWall.Bounds.Value.MaxPoint.Z));
 				convertedCurtainWall.Bounds.Add(new Component.Point(curtainWall.Bounds.Value.MinPoint.X, curtainWall.Bounds.Value.MinPoint.Y, curtainWall.Bounds.Value.MinPoint.Z));
 
+				convertedCurtainWall.Handle = curtainWall.Handle;
+				convertedCurtainWall.HandleId = curtainWall.Handle.ToString();
+
 				convertedCurtainWall.Layer = curtainWall.Layer;
 				convertedCurtainWall.LayerId = curtainWall.LayerId.ToString();
 
@@ -61,9 +64,6 @@ namespace Collection
 				//convertedCurtainWall.Rotation = 
 
 				convertedCurtainWall.CollisionType = curtainWall.CollisionType.ToString();
-
-				convertedCurtainWall.ObjectHandle = curtainWall.Handle;
-				convertedCurtainWall.ObjectHandleId = curtainWall.Handle.ToString();
 
 				convertedCurtainWall.StyleHandle = curtainWall.StyleId.Handle;
 				convertedCurtainWall.Style = Entities.CurtainWallLayoutStyles[curtainWall.StyleId.Handle.ToString()].Name;
@@ -104,6 +104,9 @@ namespace Collection
 				convertedDoor.Bounds.Add(new Component.Point(door.Bounds.Value.MaxPoint.X, door.Bounds.Value.MaxPoint.Y, door.Bounds.Value.MaxPoint.Z));
 				convertedDoor.Bounds.Add(new Component.Point(door.Bounds.Value.MinPoint.X, door.Bounds.Value.MinPoint.Y, door.Bounds.Value.MinPoint.Z));
 
+				convertedDoor.Handle = door.Handle;
+				convertedDoor.HandleId = door.Handle.ToString();
+
 				convertedDoor.Layer = door.Layer;
 				convertedDoor.LayerId = door.LayerId.ToString();
 
@@ -126,9 +129,6 @@ namespace Collection
 				//convertedDoor.Offset = 
 
 				convertedDoor.CollisionType = door.CollisionType.ToString();
-
-				convertedDoor.Handle = door.Handle;
-				convertedDoor.HandleId = door.Handle.ToString();
 
 				convertedDoor.StyleHandle = door.StyleId.Handle;
 				convertedDoor.Style = Entities.DoorStyles[door.StyleId.Handle.ToString()].Name;
@@ -169,6 +169,9 @@ namespace Collection
 				convertedOpening.Bounds.Add(new Component.Point(opening.Bounds.Value.MaxPoint.X, opening.Bounds.Value.MaxPoint.Y, opening.Bounds.Value.MaxPoint.Z));
 				convertedOpening.Bounds.Add(new Component.Point(opening.Bounds.Value.MinPoint.X, opening.Bounds.Value.MinPoint.Y, opening.Bounds.Value.MinPoint.Z));
 
+				convertedOpening.Handle = opening.Handle;
+				convertedOpening.HandleId = opening.Handle.ToString();
+
 				convertedOpening.Layer = opening.Layer;
 				convertedOpening.LayerId = opening.LayerId.ToString();
 
@@ -193,8 +196,6 @@ namespace Collection
 
 				convertedOpening.CollisionType = opening.CollisionType.ToString();
 
-				convertedOpening.Handle = opening.Handle;
-				convertedOpening.HandleId = opening.Handle.ToString();
 
 				ConvertedEntities.Openings.Add(convertedOpening);
 			}
@@ -215,6 +216,9 @@ namespace Collection
 
 				convertedWall.Bounds.Add(new Component.Point(wall.Bounds.Value.MaxPoint.X, wall.Bounds.Value.MaxPoint.Y, wall.Bounds.Value.MaxPoint.Z));
 				convertedWall.Bounds.Add(new Component.Point(wall.Bounds.Value.MinPoint.X, wall.Bounds.Value.MinPoint.Y, wall.Bounds.Value.MinPoint.Z));
+
+				convertedWall.Handle = wall.Handle;
+				convertedWall.HandleId = wall.Handle.ToString();
 
 				convertedWall.Layer = wall.Layer;
 				convertedWall.LayerId = wall.LayerId.ToString();
@@ -237,9 +241,6 @@ namespace Collection
 				//convertedWall.Rotation = 
 
 				convertedWall.CollisionType = wall.CollisionType.ToString();
-
-				convertedWall.ObjectHandle = wall.Handle;
-				convertedWall.ObjectHandleId = wall.Handle.ToString();
 
 				convertedWall.StyleHandle = wall.StyleId.Handle;
 				convertedWall.Style = Entities.WallStyles[wall.StyleId.Handle.ToString()].Name;
@@ -280,6 +281,9 @@ namespace Collection
 				convertedWindow.Bounds.Add(new Component.Point(window.Bounds.Value.MaxPoint.X, window.Bounds.Value.MaxPoint.Y, window.Bounds.Value.MaxPoint.Z));
 				convertedWindow.Bounds.Add(new Component.Point(window.Bounds.Value.MinPoint.X, window.Bounds.Value.MinPoint.Y, window.Bounds.Value.MinPoint.Z));
 
+				convertedWindow.Handle = window.Handle;
+				convertedWindow.HandleId = window.Handle.ToString();
+
 				convertedWindow.Layer = window.Layer;
 				convertedWindow.LayerId = window.LayerId.ToString();
 
@@ -303,9 +307,6 @@ namespace Collection
 				//convertedWindow.Offset = 
 
 				convertedWindow.CollisionType = window.CollisionType.ToString();
-
-				convertedWindow.Handle = window.Handle;
-				convertedWindow.HandleId = window.Handle.ToString();
 
 				convertedWindow.StyleHandle = window.StyleId.Handle;
 				convertedWindow.Style = Entities.WindowStyles[window.StyleId.Handle.ToString()].Name;
@@ -346,6 +347,9 @@ namespace Collection
 				convertedWindowAssembly.Bounds.Add(new Component.Point(windowAssembly.Bounds.Value.MaxPoint.X, windowAssembly.Bounds.Value.MaxPoint.Y, windowAssembly.Bounds.Value.MaxPoint.Z));
 				convertedWindowAssembly.Bounds.Add(new Component.Point(windowAssembly.Bounds.Value.MinPoint.X, windowAssembly.Bounds.Value.MinPoint.Y, windowAssembly.Bounds.Value.MinPoint.Z));
 
+				convertedWindowAssembly.Handle = windowAssembly.Handle;
+				convertedWindowAssembly.HandleId = windowAssembly.Handle.ToString();
+
 				convertedWindowAssembly.Layer = windowAssembly.Layer;
 				convertedWindowAssembly.LayerId = windowAssembly.LayerId.ToString();
 
@@ -369,9 +373,6 @@ namespace Collection
 				//convertedWindowAssembly.Offset = 
 
 				convertedWindowAssembly.CollisionType = windowAssembly.CollisionType.ToString();
-
-				convertedWindowAssembly.Handle = windowAssembly.Handle;
-				convertedWindowAssembly.HandleId = windowAssembly.Handle.ToString();
 
 				convertedWindowAssembly.StyleHandle = windowAssembly.StyleId.Handle;
 				convertedWindowAssembly.Style = Entities.WindowStyles[windowAssembly.StyleId.Handle.ToString()].Name;
@@ -412,6 +413,9 @@ namespace Collection
 				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MaxPoint.X, blockReference.Bounds.Value.MaxPoint.Y, blockReference.Bounds.Value.MaxPoint.Z));
 				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MinPoint.X, blockReference.Bounds.Value.MinPoint.Y, blockReference.Bounds.Value.MinPoint.Z));
 
+				convertedBlockReference.Handle = blockReference.Handle;
+				convertedBlockReference.HandleId = blockReference.Handle.ToString();
+
 				convertedBlockReference.Layer = blockReference.Layer;
 				convertedBlockReference.LayerId = blockReference.LayerId.ToString();
 
@@ -429,9 +433,6 @@ namespace Collection
 				convertedBlockReference.Rotation = blockReference.Rotation;
 
 				convertedBlockReference.ScaleFactor = new Component.Point(blockReference.ScaleFactors.X, blockReference.ScaleFactors.Y, blockReference.ScaleFactors.Z); ;
-
-				convertedBlockReference.Handle = blockReference.Handle;
-				convertedBlockReference.HandleId = blockReference.Handle.ToString();
 
 				ConvertedEntities.BlockReferences.Add(convertedBlockReference);
 			}
@@ -453,6 +454,9 @@ namespace Collection
 				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MaxPoint.X, multiViewBlockReference.Bounds.Value.MaxPoint.Y, multiViewBlockReference.Bounds.Value.MaxPoint.Z));
 				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MinPoint.X, multiViewBlockReference.Bounds.Value.MinPoint.Y, multiViewBlockReference.Bounds.Value.MinPoint.Z));
 
+				convertedMultiViewBlockReference.Handle = multiViewBlockReference.Handle;
+				convertedMultiViewBlockReference.HandleId = multiViewBlockReference.Handle.ToString();
+
 				convertedMultiViewBlockReference.Layer = multiViewBlockReference.Layer;
 				convertedMultiViewBlockReference.LayerId = multiViewBlockReference.LayerId.ToString();
 
@@ -470,9 +474,6 @@ namespace Collection
 				convertedMultiViewBlockReference.EndPoint = new Component.Point(multiViewBlockReference.EndPoint.X, multiViewBlockReference.EndPoint.Y, multiViewBlockReference.EndPoint.Z);
 
 				convertedMultiViewBlockReference.Rotation = multiViewBlockReference.Rotation;
-
-				convertedMultiViewBlockReference.Handle = multiViewBlockReference.Handle;
-				convertedMultiViewBlockReference.HandleId = multiViewBlockReference.Handle.ToString();
 
 				convertedMultiViewBlockReference.StyleHandle = multiViewBlockReference.StyleId.Handle;
 				convertedMultiViewBlockReference.StyleId = multiViewBlockReference.StyleId.ToString();
@@ -497,6 +498,9 @@ namespace Collection
 				convertedSpace.Bounds.Add(new Component.Point(space.Bounds.Value.MaxPoint.X, space.Bounds.Value.MaxPoint.Y, space.Bounds.Value.MaxPoint.Z));
 				convertedSpace.Bounds.Add(new Component.Point(space.Bounds.Value.MinPoint.X, space.Bounds.Value.MinPoint.Y, space.Bounds.Value.MinPoint.Z));
 
+				convertedSpace.Handle = space.Handle;
+				convertedSpace.HandleId = space.Handle.ToString();
+
 				convertedSpace.Layer = space.Layer;
 				convertedSpace.LayerId = space.LayerId.ToString();
 
@@ -513,9 +517,6 @@ namespace Collection
 				//convertedSpace.Walls = 
 				//convertedSpace.Surfaces = 
 				//convertedSpace.TranslatedSurfaces = 
-
-				convertedSpace.Handle = space.Handle;
-				convertedSpace.HandleId = space.Handle.ToString();
 
 				convertedSpace.StyleHandle = space.StyleId.Handle;
 				convertedSpace.StyleId = space.StyleId.ToString();
@@ -540,6 +541,9 @@ namespace Collection
 				convertedZone.Bounds.Add(new Component.Point(zone.Bounds.Value.MaxPoint.X, zone.Bounds.Value.MaxPoint.Y, zone.Bounds.Value.MaxPoint.Z));
 				convertedZone.Bounds.Add(new Component.Point(zone.Bounds.Value.MinPoint.X, zone.Bounds.Value.MinPoint.Y, zone.Bounds.Value.MinPoint.Z));
 
+				convertedZone.Handle = zone.Handle;
+				convertedZone.HandleId = zone.Handle.ToString();
+
 				convertedZone.Layer = zone.Layer;
 				convertedZone.LayerId = zone.LayerId.ToString();
 
@@ -559,9 +563,6 @@ namespace Collection
 				//convertedZone.Spaces = 
 				//convertedZone.SpaceIds =
 				//convertedZone.ZoneIds =
-
-				convertedZone.Handle = zone.Handle;
-				convertedZone.HandleId = zone.Handle.ToString();
 
 				convertedZone.StyleHandle = zone.StyleId.Handle;
 				convertedZone.StyleId = zone.StyleId.ToString();

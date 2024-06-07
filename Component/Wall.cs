@@ -19,9 +19,6 @@ namespace Component
 
 		public string CollisionType { get; set; }
 
-		public Handle ObjectHandle { get; set; }
-		public string ObjectHandleId { get; set; }
-
 		public Handle StyleHandle { get; set; }
 		public string Style { get; set; }
 		public string StyleId { get; set; }

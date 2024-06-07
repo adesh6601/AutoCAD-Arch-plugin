@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
-using Collection;
 using Autodesk.Aec.Arch.DatabaseServices;
 using Autodesk.Aec.DatabaseServices;
 using Autodesk.Aec.Project;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Collection;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 public class Reader
@@ -29,11 +29,12 @@ public class Reader
 	public List<Space> Spaces = new List<Space>();
 	public List<Zone> Zones = new List<Zone>();
 
+	public Dictionary<string, List<string>> Positions = new Dictionary<string, List<string>>();
+
 	public Dictionary<string, Material> Materials = new Dictionary<string, Material>();
 
 	public Dictionary<string, CurtainWallLayoutStyle> CurtainWallLayoutStyles = new Dictionary<string, CurtainWallLayoutStyle>();
 	public Dictionary<string, DoorStyle> DoorStyles = new Dictionary<string, DoorStyle>();
-	public Dictionary<string, OpeningEndcapStyle> OpeningStyles = new Dictionary<string, OpeningEndcapStyle>();
 	public Dictionary<string, WallStyle> WallStyles = new Dictionary<string, WallStyle>();
 	public Dictionary<string, WindowStyle> WindowStyles = new Dictionary<string, WindowStyle>();
 	public Dictionary<string, WindowAssemblyStyle> WindowAssemblyStyles = new Dictionary<string, WindowAssemblyStyle>();
@@ -48,7 +49,7 @@ public class Reader
 	public Transaction Txn;
 	public BlockTableRecord BlockTableRecord;
 	public StringCollection xRefs = new StringCollection();
-	public Dictionary<string, List<string>> LevelsAndDivisions = new Dictionary<string, List<string>>();
+	public Dictionary<string, HashSet<string>> DivisionsAndLevels = new Dictionary<string, HashSet<string>>();
 
 	[CommandMethod("Read Entities")]
 	public void ReadEntities()
@@ -63,8 +64,9 @@ public class Reader
 				continue;
 			}
 
-			LevelsAndDivisions.Clear();
-			SetLevelsAndDivisions(projectFile.FileFullPath);
+			DivisionsAndLevels.Clear();
+			SetDivisionsAndLevels(projectFile.FileFullPath);
+			CheckDivisionsAndLevels();
 
 			xRefs.Clear();
 			SetXRefs(projectFile);
@@ -90,14 +92,14 @@ public class Reader
 				}
 
 				AddEntityToList(entity, entityType);
+				AddEntityPositionToDict(entity, entityType);
 				AddEntityMaterialToDict(entityType);
 				AddEntityStyleToDict(entityType);
 			}
-
 			ResetTransaction();
 			CloseFileInApp();
 		}
-
+		CheckPositions();
 		CheckCounts();
 	}
 
@@ -118,11 +120,12 @@ public class Reader
 		entities.Zones = Zones;
 		entities.Spaces = Spaces;
 
+		entities.Positions = Positions;
+
 		entities.Materials = Materials;
 
 		entities.CurtainWallLayoutStyles = CurtainWallLayoutStyles;
 		entities.DoorStyles = DoorStyles;
-		entities.OpeningStyles = OpeningStyles;
 		entities.WallStyles = WallStyles;
 		entities.WindowStyles = WindowStyles;
 		entities.WindowAssemblyStyles = WindowAssemblyStyles;
@@ -142,9 +145,9 @@ public class Reader
 		ProjectFiles = Project.GetConstructs();
 	}
 
-	public void SetLevelsAndDivisions(string filePath)
+	public void SetDivisionsAndLevels(string filePath)
 	{
-		if (!System.IO.File.Exists(filePath))
+		if (!File.Exists(filePath))
 		{
 			return;
 		}
@@ -158,21 +161,14 @@ public class Reader
 					continue;
 				}
 				
-				string level = reader.GetAttribute("Level");
 				string division = reader.GetAttribute("Division");
+				string level = reader.GetAttribute("Level");
 
-				if (!LevelsAndDivisions.ContainsKey(division))
+				if (!DivisionsAndLevels.ContainsKey(division))
 				{
-					LevelsAndDivisions.Add(division, new List<string>());
+					DivisionsAndLevels[division] = new HashSet<string>();
 				}
-
-				List<string> levelsList = LevelsAndDivisions[division];
-				
-				if (!levelsList.Contains(level))
-				{
-					continue;
-				}
-				levelsList.Add(level);
+				DivisionsAndLevels[division].Add(level);
 			}
 		}
 	}
@@ -205,6 +201,36 @@ public class Reader
 				xRefs.Add(btr.PathName);
 			}
 		}
+	}
+
+	public Database GetDbForFile(string dwgFullPath)
+	{
+		DocumentCollection docs = Application.DocumentManager;
+		Document doc = null;
+
+		foreach (Document elem in docs)
+		{
+			if (IsSamePath(elem.Database.Filename, dwgFullPath))
+			{
+				doc = elem;
+				break;
+			}
+		}
+
+		if (doc != null)
+		{
+			return doc.Database;
+		}
+
+		Database db = new Database(false, true);
+		db.ReadDwgFile(dwgFullPath, FileShare.Read, false, null);
+		db.ResolveXrefs(false, true);
+		return db;
+	}
+
+	public bool IsSamePath(string path1, string path2)
+	{
+		return string.Equals(path1, path2, StringComparison.OrdinalIgnoreCase);
 	}
 
 	public void OpenFileInApp(ProjectFile file)
@@ -251,11 +277,6 @@ public class Reader
 	public void SetTransaction()
 	{
 		Txn = Database.TransactionManager.StartTransaction();
-	}
-
-	public void ResetTransaction()
-	{
-		Txn.Commit();
 	}
 
 	public void SetBlockTableRecorde()
@@ -356,6 +377,115 @@ public class Reader
 		}
 	}
 
+	public void AddEntityPositionToDict(object entity, string entityType)
+	{
+		if (entityType == "wall")
+		{
+			Wall wall = (Wall)entity;
+			string handleId = wall.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "curtainWallLayout")
+		{
+			CurtainWallLayout curtainWall = (CurtainWallLayout)entity;
+			string handleId = curtainWall.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "window")
+		{
+			Window window = (Window)entity;
+			string handleId = window.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "windowAssembly")
+		{
+			WindowAssembly windowAssembly = (WindowAssembly)entity;
+			string handleId = windowAssembly.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "door")
+		{
+			Door door = (Door)entity;
+			string handleId = door.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "opening")
+		{
+			Opening opening = (Opening)entity;
+			string handleId = opening.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "space")
+		{
+			Space space = (Space)entity;
+			string handleId = space.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "multiViewBlockReference")
+		{
+			MultiViewBlockReference multiViewBlockReference = (MultiViewBlockReference)entity;
+			string handleId = multiViewBlockReference.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "blockReference")
+		{
+			Autodesk.AutoCAD.DatabaseServices.BlockReference blockReference = (Autodesk.AutoCAD.DatabaseServices.BlockReference)entity;
+			string handleId = blockReference.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+
+		if (entityType == "zone")
+		{
+			Zone zone = (Zone)entity;
+			string handleId = zone.Handle.ToString();
+
+			AddDivisionAndLevelToDict(handleId);
+			return;
+		}
+	}
+
+	public void AddDivisionAndLevelToDict(string handleId)
+	{
+		if (!Positions.ContainsKey(handleId))
+		{
+			Positions[handleId] = new List<string>();
+		}
+
+		foreach (string div in DivisionsAndLevels.Keys)
+		{
+			foreach (string lvl in DivisionsAndLevels[div])
+			{
+				Positions[handleId].Add(div + "." + lvl);
+			}
+		}
+	}
+
 	public void AddEntityMaterialToDict(string entityType)
 	{
 		if (entityType == "wall")
@@ -363,10 +493,7 @@ public class Reader
 			Material material = Txn.GetObject(Walls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Walls.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -375,10 +502,7 @@ public class Reader
 			Material material = Txn.GetObject(CurtainWalls.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = CurtainWalls.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -387,10 +511,7 @@ public class Reader
 			Material material = Txn.GetObject(Windows.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Windows.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -399,10 +520,7 @@ public class Reader
 			Material material = Txn.GetObject(WindowAssemblies.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = WindowAssemblies.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -411,10 +529,7 @@ public class Reader
 			Material material = Txn.GetObject(Doors.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Doors.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -423,10 +538,7 @@ public class Reader
 			Material material = Txn.GetObject(Openings.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Openings.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -435,10 +547,7 @@ public class Reader
 			Material material = Txn.GetObject(Spaces.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Spaces.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -447,10 +556,7 @@ public class Reader
 			Material material = Txn.GetObject(MultiViewBlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = MultiViewBlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -459,10 +565,7 @@ public class Reader
 			Material material = Txn.GetObject(BlockReferences.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = BlockReferences.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 
@@ -471,10 +574,7 @@ public class Reader
 			Material material = Txn.GetObject(Zones.Last().MaterialId, OpenMode.ForRead) as Material;
 			string materialId = Zones.Last().MaterialId.Handle.ToString();
 
-			if (!Materials.ContainsKey(materialId))
-			{
-				Materials[materialId] = material;
-			}
+			Materials[materialId] = material;
 			return;
 		}
 	}
@@ -486,10 +586,7 @@ public class Reader
 			WallStyle wallStyle = Txn.GetObject(Walls.Last().StyleId, OpenMode.ForRead) as WallStyle;
 			string wallStyleId = Walls.Last().StyleId.Handle.ToString();
 
-			if (!WallStyles.ContainsKey(wallStyleId))
-			{
-				WallStyles[wallStyleId] = wallStyle;
-			}
+			WallStyles[wallStyleId] = wallStyle;
 			return;
 		}
 
@@ -498,10 +595,7 @@ public class Reader
 			CurtainWallLayoutStyle curtainWallLayoutStyle = Txn.GetObject(CurtainWalls.Last().StyleId, OpenMode.ForRead) as CurtainWallLayoutStyle;
 			string CurtainWallLayoutStyleId = CurtainWalls.Last().StyleId.Handle.ToString();
 
-			if (!CurtainWallLayoutStyles.ContainsKey(CurtainWallLayoutStyleId))
-			{
-				CurtainWallLayoutStyles[CurtainWallLayoutStyleId] = curtainWallLayoutStyle;
-			}
+			CurtainWallLayoutStyles[CurtainWallLayoutStyleId] = curtainWallLayoutStyle;
 			return;
 		}
 
@@ -510,10 +604,7 @@ public class Reader
 			WindowStyle windowStyle = Txn.GetObject(Windows.Last().StyleId, OpenMode.ForRead) as WindowStyle;
 			string windowStyleId = Windows.Last().StyleId.Handle.ToString();
 
-			if (!WindowStyles.ContainsKey(windowStyleId))
-			{
-				WindowStyles[windowStyleId] = windowStyle;
-			}
+			WindowStyles[windowStyleId] = windowStyle;
 			return;
 		}
 
@@ -522,10 +613,7 @@ public class Reader
 			WindowAssemblyStyle windowAssemblyStyle = Txn.GetObject(WindowAssemblies.Last().StyleId, OpenMode.ForRead) as WindowAssemblyStyle;
 			string windowAssemblyStyleId = WindowAssemblies.Last().StyleId.Handle.ToString();
 
-			if (!WindowAssemblyStyles.ContainsKey(windowAssemblyStyleId))
-			{
-				WindowAssemblyStyles[windowAssemblyStyleId] = windowAssemblyStyle;
-			}
+			WindowAssemblyStyles[windowAssemblyStyleId] = windowAssemblyStyle;
 			return;
 		}
 
@@ -534,59 +622,19 @@ public class Reader
 			DoorStyle doorStyle = Txn.GetObject(Doors.Last().StyleId, OpenMode.ForRead) as DoorStyle;
 			string doorStyleId = Doors.Last().StyleId.Handle.ToString();
 
-			if (!DoorStyles.ContainsKey(doorStyleId))
-			{
-				DoorStyles[doorStyleId] = doorStyle;
-			}
+			DoorStyles[doorStyleId] = doorStyle;
 			return;
 		}
+	}
 
-		if (entityType == "opening")
-		{
-			OpeningEndcapStyle openingStyle = Txn.GetObject(Openings.Last().StyleId, OpenMode.ForRead) as OpeningEndcapStyle;
-			string openingStyleId = Openings.Last().StyleId.Handle.ToString();
-
-			if (!OpeningStyles.ContainsKey(openingStyleId))
-			{
-				OpeningStyles[openingStyleId] = openingStyle;
-			}
-			return;
-		}
+	public void ResetTransaction()
+	{
+		Txn.Commit();
 	}
 
 	public void CloseFileInApp()
 	{
 		OpenedDoc.Close();
-	}
-
-	public Database GetDbForFile(string dwgFullPath)
-	{
-		DocumentCollection docs = Application.DocumentManager;
-		Document doc = null;
-
-		foreach (Document elem in docs)
-		{
-			if (IsSamePath(elem.Database.Filename, dwgFullPath))
-			{
-				doc = elem;
-				break;
-			}
-		}
-
-		if (doc != null)
-		{
-			return doc.Database;
-		}
-
-		Database db = new Database(false, true);
-		db.ReadDwgFile(dwgFullPath, FileShare.Read, false, null);
-		db.ResolveXrefs(false, true);
-		return db;
-	}
-
-	public bool IsSamePath(string path1, string path2)
-	{
-		return string.Equals(path1, path2, StringComparison.OrdinalIgnoreCase);
 	}
 
 	public void CheckCounts()
@@ -606,11 +654,42 @@ public class Reader
 						"\nMaterialsDictionary - " + Materials.Count() +
 						"\nCurtainWallLayoutStyles " + CurtainWallLayoutStyles.Count() +
 						"\nDoorStyles " + DoorStyles.Count() +
-						"\nOpeningStyles " + OpeningStyles.Count() +
 						"\nWallStyles " + WallStyles.Count() +
 						"\nWindowStyles " + WindowStyles.Count() +
 						"\nWindowAssemblyStyles " + WindowAssemblyStyles.Count();
 		WriteTextToFile(filePath, text);
+	}
+
+	public void CheckPositions()
+	{
+		string filePath = "positions.txt";
+
+		using (StreamWriter sw = File.AppendText(filePath))
+		{
+			foreach (string handleId in Positions.Keys)
+			{
+				foreach (string divlvl in Positions[handleId])
+				{
+					sw.WriteLine(handleId + " - " + divlvl);
+				}
+			}
+		}
+	}
+
+	public void CheckDivisionsAndLevels()
+	{
+		string filePath = "lvlsdiv.txt";
+
+		using (StreamWriter sw = File.AppendText(filePath))
+		{
+			foreach (string div in DivisionsAndLevels.Keys)
+			{
+				foreach (string lvl in DivisionsAndLevels[div])
+				{
+					sw.WriteLine(div + " - " + lvl);
+				}
+			}
+		}		
 	}
 
 	static void WriteTextToFile(string filePath, string text)
