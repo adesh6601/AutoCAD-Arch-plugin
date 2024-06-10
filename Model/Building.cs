@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Model
 {
 	public class Building
 	{
-		public List<Floor> Floors { get; set; } = new List<Floor>();
+		public Dictionary<string, Floor> Floors { get; set; } = new Dictionary<string, Floor>();
 	}
 }

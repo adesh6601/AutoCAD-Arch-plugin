@@ -39,6 +39,10 @@ public class Reader
 	public Dictionary<string, WindowStyle> WindowStyles = new Dictionary<string, WindowStyle>();
 	public Dictionary<string, WindowAssemblyStyle> WindowAssemblyStyles = new Dictionary<string, WindowAssemblyStyle>();
 
+	public Entities Entities = new Entities();
+
+	public string ProjectPath;
+
 	public Project Project;
 	public ProjectFile[] ProjectFiles;
 
@@ -51,10 +55,15 @@ public class Reader
 	public StringCollection xRefs = new StringCollection();
 	public Dictionary<string, HashSet<string>> DivisionsAndLevels = new Dictionary<string, HashSet<string>>();
 
-	[CommandMethod("Read Entities")]
+
+	public Reader(string projectPath)
+	{
+		ProjectPath = projectPath;
+	}
+
 	public void ReadEntities()
 	{
-		OpenProject("C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj");
+		OpenProject(ProjectPath);
 		SetProjectFiles();
 
 		foreach (ProjectFile projectFile in ProjectFiles)
@@ -105,33 +114,35 @@ public class Reader
 
 	public Entities GetEntities()
 	{
-        Entities entities = new Entities();
+		GroupEntities();
+		return Entities;
+	}
 
-		entities.CurtainWalls = CurtainWalls;
-		entities.Doors = Doors; ;
-		entities.Openings = Openings;
-		entities.Walls = Walls;
-		entities.Windows = Windows;
-		entities.WindowAssemblies = WindowAssemblies;
+	public void GroupEntities()
+	{
+		Entities.CurtainWalls = CurtainWalls;
+		Entities.Doors = Doors; ;
+		Entities.Openings = Openings;
+		Entities.Walls = Walls;
+		Entities.Windows = Windows;
+		Entities.WindowAssemblies = WindowAssemblies;
 
-		entities.BlockReferences = BlockReferences;
-		entities.MultiViewBlockReferences = MultiViewBlockReferences;
+		Entities.BlockReferences = BlockReferences;
+		Entities.MultiViewBlockReferences = MultiViewBlockReferences;
 
-		entities.Zones = Zones;
-		entities.Spaces = Spaces;
+		Entities.Zones = Zones;
+		Entities.Spaces = Spaces;
 
-		entities.Positions = Positions;
+		Entities.Positions = Positions;
 
-		entities.Materials = Materials;
+		Entities.Materials = Materials;
 
-		entities.CurtainWallLayoutStyles = CurtainWallLayoutStyles;
-		entities.DoorStyles = DoorStyles;
-		entities.WallStyles = WallStyles;
-		entities.WindowStyles = WindowStyles;
-		entities.WindowAssemblyStyles = WindowAssemblyStyles;
-
-		return entities;
-}
+		Entities.CurtainWallLayoutStyles = CurtainWallLayoutStyles;
+		Entities.DoorStyles = DoorStyles;
+		Entities.WallStyles = WallStyles;
+		Entities.WindowStyles = WindowStyles;
+		Entities.WindowAssemblyStyles = WindowAssemblyStyles;
+	}
 
 	public void OpenProject(string projectPath)
 	{

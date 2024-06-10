@@ -31,6 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\Reader\bin\Debug\External-dll\AcCoreMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="Collection">
+      <HintPath>..\Collection\bin\Debug\Collection.dll</HintPath>
+    </Reference>
+    <Reference Include="Component">
+      <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
+    </Reference>
+    <Reference Include="Model">
+      <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Reader">
+      <HintPath>..\Reader\bin\Debug\Reader.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

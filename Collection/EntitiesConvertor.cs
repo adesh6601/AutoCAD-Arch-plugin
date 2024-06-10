@@ -11,15 +11,33 @@ namespace Collection
 
 		public UnitsValue UnitsValue;
 
-		public EntitiesConvertor(Entities entities, UnitsValue unitsValue)
+		public EntitiesConvertor(Entities entities)
 		{
 			Entities = entities;
-			UnitsValue = unitsValue;
+			//UnitsValue = unitsValue;
 		}
 
-		public ConvertedEntities ConvertEntities()
+		public void ConvertEntities()
 		{
-			return null;
+			ConvertCurtainWalls();
+			ConvertDoors();
+			ConvertOpenings();
+			ConvertWalls();
+			ConvertWindows();
+			ConvertWindowAssemblies();
+
+			ConvertBlockReferences();
+			ConvertMultiViewBlockReferences();
+
+			ConvertSpaces();
+			ConvertZones();
+
+			ConvertedEntities.Positions = Entities.Positions;
+		}
+
+		public ConvertedEntities GetConvertedEntities()
+		{
+			return ConvertedEntities;
 		}
 
 		public void ConvertCurtainWalls()

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Component;
 
 namespace Model
 {
     public class Floor
     {
-		public Floor() { }
-
-		public int FloorNumber { get; set; }
-
 		public List<CurtainWall> CurtainWalls { get; set; } = new List<CurtainWall>();
 		public List<Door> Doors { get; set; } = new List<Door>();
 		public List<Opening> Openings { get; set; } = new List<Opening>();

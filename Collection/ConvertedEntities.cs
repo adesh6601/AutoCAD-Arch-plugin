@@ -17,5 +17,7 @@ namespace Collection
 
 		public List<Space> Spaces { get; set; } = new List<Space>();
 		public List<Zone> Zones { get; set; } = new List<Zone>();
+
+		public Dictionary<string, List<string>> Positions { get; set; } = new Dictionary<string, List<string>>();
 	}
 }
