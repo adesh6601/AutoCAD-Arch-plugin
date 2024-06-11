@@ -8,29 +8,21 @@ namespace Plugin
     {
         public static string ProjectPath = "C:\\Users\\Adesh Lad\\Documents\\Autodesk\\My Projects\\Sample Project 2024\\Sample Project.apj";
 
-        Reader Reader = new Reader(ProjectPath);
+        Reader Reader = new Reader();
+        Builder Builder = new Builder();
 
-        Entities Entities;
-        ConvertedEntities ConvertedEntities;
+        Entities Entities = new Entities();
 
-        Building Building;
+        Building Building = new Building();
 
-		[CommandMethod("Initiate Data Collection")]
+		[CommandMethod("Initiate")]
 		public void InitiateDataCollection()
         {
-            Reader.ReadEntities();
+            Reader.ReadEntities(ProjectPath, Entities);
 
-            Entities = Reader.GetEntities();
+            Builder.Build(Entities, Building);
 
-            EntitiesConvertor entitiesConvertor = new EntitiesConvertor(Entities);
-            entitiesConvertor.ConvertEntities();
-
-			ConvertedEntities = entitiesConvertor.GetConvertedEntities();
-
-            Builder builder = new Builder(ConvertedEntities);
-            builder.Build();
-
-			Building = builder.GetBuilding();
+            int i = 0;
 		}
     }
 }

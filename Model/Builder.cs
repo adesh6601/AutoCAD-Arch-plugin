@@ -6,281 +6,268 @@ namespace Model
 {
 	public class Builder
 	{
-		public ConvertedEntities Entities;
-		public Building Building;
-
-		public Builder(ConvertedEntities entites)
+		public void Build(Entities entities, Building building)
 		{
-			Entities = entites;
+			AddCurtainWallsToBuilding(entities, building);
+			AddDoorsToBuilding(entities, building);
+			AddOpeningsToBuilding(entities, building);
+			AddWallsToBuilding(entities, building);
+			AddWindowsToBuilding(entities, building);
+			AddWindowAssembliesToBuilding(entities, building);
+
+			AddBlockReferencesToBuilding(entities, building);
+			AddMultiViewBlockReferencesToBuilding(entities, building);
+
+			AddSpacesToBuilding(entities, building);
+			AddZonesToBuilding(entities, building);
 		}
 
-		public void Build()
+		public void AddCurtainWallsToBuilding(Entities entities, Building building)
 		{
-			AddCurtainWallsToBuilding();
-			AddDoorsToBuilding();
-			AddOpeningsToBuilding();
-			AddWallsToBuilding();
-			AddWindowsToBuilding();
-			AddWindowAssembliesToBuilding();
-
-			AddBlockReferencesToBuilding();
-			AddMultiViewBlockReferencesToBuilding();
-
-			AddSpacesToBuilding();
-			AddZonesToBuilding();
-		}
-
-		public Building GetBuilding()
-		{
-			return Building;
-		}
-
-		public void AddCurtainWallsToBuilding()
-		{
-			foreach (CurtainWall curtainWall in Entities.CurtainWalls)
+			foreach (CurtainWall curtainWall in entities.CurtainWalls)
 			{
 				string handleId = curtainWall.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].CurtainWalls.Add(curtainWall);
+					building.Floors[floorId].CurtainWalls.Add(curtainWall);
 				}
 			}
 		}
 
-		public void AddDoorsToBuilding()
+		public void AddDoorsToBuilding(Entities entities, Building building)
 		{
-			foreach (Door door in Entities.Doors)
+			foreach (Door door in entities.Doors)
 			{
 				string handleId = door.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Doors.Add(door);
+					building.Floors[floorId].Doors.Add(door);
 				}
 			}
 		}
 
-		public void AddOpeningsToBuilding()
+		public void AddOpeningsToBuilding(Entities entities, Building building)
 		{
-			foreach (Opening opening in Entities.Openings)
+			foreach (Opening opening in entities.Openings)
 			{
 				string handleId = opening.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Openings.Add(opening);
+					building.Floors[floorId].Openings.Add(opening);
 				}
 			}
 		}
 
-		public void AddWallsToBuilding()
+		public void AddWallsToBuilding(Entities entities, Building building)
 		{
-			foreach (Wall wall in Entities.Walls)
+			foreach (Wall wall in entities.Walls)
 			{
 				string handleId = wall.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Walls.Add(wall);
+					building.Floors[floorId].Walls.Add(wall);
 				}
 			}
 		}
 
-		public void AddWindowsToBuilding()
+		public void AddWindowsToBuilding(Entities entities, Building building)
 		{
-			foreach (Window window in Entities.Windows)
+			foreach (Window window in entities.Windows)
 			{
 				string handleId = window.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Windows.Add(window);
+					building.Floors[floorId].Windows.Add(window);
 				}
 			}
 		}
 
-		public void AddWindowAssembliesToBuilding()
+		public void AddWindowAssembliesToBuilding(Entities entities, Building building)
 		{
-			foreach (WindowAssembly windowAssembly in Entities.WindowAssemblies)
+			foreach (WindowAssembly windowAssembly in entities.WindowAssemblies)
 			{
 				string handleId = windowAssembly.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].WindowAssemblies.Add(windowAssembly);
+					building.Floors[floorId].WindowAssemblies.Add(windowAssembly);
 				}
 			}
 		}
 
-		public void AddBlockReferencesToBuilding()
+		public void AddBlockReferencesToBuilding(Entities entities, Building building)
 		{
-			foreach (BlockReference blockReference in Entities.BlockReferences)
+			foreach (BlockReference blockReference in entities.BlockReferences)
 			{
 				string handleId = blockReference.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].BlockReferences.Add(blockReference);
+					building.Floors[floorId].BlockReferences.Add(blockReference);
 				}
 			}
 		}
 
-		public void AddMultiViewBlockReferencesToBuilding()
+		public void AddMultiViewBlockReferencesToBuilding(Entities entities, Building building)
 		{
-			foreach (MultiViewBlockReference multiViewBlockReferences in Entities.MultiViewBlockReferences)
+			foreach (MultiViewBlockReference multiViewBlockReferences in entities.MultiViewBlockReferences)
 			{
 				string handleId = multiViewBlockReferences.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].MultiViewBlockReferences.Add(multiViewBlockReferences);
+					building.Floors[floorId].MultiViewBlockReferences.Add(multiViewBlockReferences);
 				}
 			}
 		}
 
-		public void AddSpacesToBuilding()
+		public void AddSpacesToBuilding(Entities entities, Building building)
 		{
-			foreach (Space space in Entities.Spaces)
+			foreach (Space space in entities.Spaces)
 			{
 				string handleId = space.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Spaces.Add(space);
+					building.Floors[floorId].Spaces.Add(space);
 				}
 			}
 		}
 
-		public void AddZonesToBuilding()
+		public void AddZonesToBuilding(Entities entities, Building building)
 		{
-			foreach (Zone zone in Entities.Zones)
+			foreach (Zone zone in entities.Zones)
 			{
 				string handleId = zone.HandleId;
 
-				List<string> positions = Entities.Positions[handleId];
+				List<string> positions = entities.Positions[handleId];
 
 				foreach (string position in positions)
 				{
 					string[] buildingAndFloor = position.Split('.');
 
-					string building = buildingAndFloor[0];
-					string floor = buildingAndFloor[1];
+					string buildingId = buildingAndFloor[0];
+					string floorId = buildingAndFloor[1];
 
-					if (!Building.Floors.ContainsKey(floor))
+					if (!building.Floors.ContainsKey(floorId))
 					{
-						Building.Floors[floor] = new Floor();
+						building.Floors[floorId] = new Floor();
 					}
 
-					Building.Floors[floor].Zones.Add(zone);
+					building.Floors[floorId].Zones.Add(zone);
 				}
 			}
 		}

@@ -62,6 +62,10 @@
     <Reference Include="Collection">
       <HintPath>..\Collection\bin\Debug\Collection.dll</HintPath>
     </Reference>
+    <Reference Include="Component, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
+    </Reference>
     <Reference Include="Model">
       <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
     </Reference>

@@ -6,43 +6,27 @@ namespace Collection
 {
 	public class EntitiesConvertor
 	{
-		public Entities Entities;
-		public ConvertedEntities ConvertedEntities;
-
 		public UnitsValue UnitsValue;
 
-		public EntitiesConvertor(Entities entities)
+		public void Convert(ACADEntities entities, Entities convertedEntities)
 		{
-			Entities = entities;
-			//UnitsValue = unitsValue;
+			ConvertCurtainWalls(entities, convertedEntities);
+			ConvertDoors(entities, convertedEntities);
+			ConvertOpenings(entities, convertedEntities);
+			ConvertWalls(entities, convertedEntities);
+			ConvertWindows(entities, convertedEntities);
+			ConvertWindowAssemblies(entities, convertedEntities);
+
+			ConvertBlockReferences(entities, convertedEntities);
+			ConvertMultiViewBlockReferences(entities, convertedEntities);
+
+			ConvertSpaces(entities, convertedEntities);
+			ConvertZones(entities, convertedEntities);
 		}
 
-		public void ConvertEntities()
+		public void ConvertCurtainWalls(ACADEntities entities, Entities convertedEntities)
 		{
-			ConvertCurtainWalls();
-			ConvertDoors();
-			ConvertOpenings();
-			ConvertWalls();
-			ConvertWindows();
-			ConvertWindowAssemblies();
-
-			ConvertBlockReferences();
-			ConvertMultiViewBlockReferences();
-
-			ConvertSpaces();
-			ConvertZones();
-
-			ConvertedEntities.Positions = Entities.Positions;
-		}
-
-		public ConvertedEntities GetConvertedEntities()
-		{
-			return ConvertedEntities;
-		}
-
-		public void ConvertCurtainWalls()
-		{
-			foreach(CurtainWallLayout curtainWall in Entities.CurtainWalls)
+			foreach(CurtainWallLayout curtainWall in entities.CurtainWalls)
 			{
 				Component.CurtainWall convertedCurtainWall = new Component.CurtainWall();
 
@@ -84,10 +68,10 @@ namespace Collection
 				convertedCurtainWall.CollisionType = curtainWall.CollisionType.ToString();
 
 				convertedCurtainWall.StyleHandle = curtainWall.StyleId.Handle;
-				convertedCurtainWall.Style = Entities.CurtainWallLayoutStyles[curtainWall.StyleId.Handle.ToString()].Name;
+				convertedCurtainWall.Style = entities.CurtainWallLayoutStyles[curtainWall.StyleId.Handle.ToString()].Name;
 				convertedCurtainWall.StyleId = curtainWall.StyleId.ToString();
 
-				Material curtainWallMaterial = Entities.Materials[curtainWall.MaterialId.Handle.ToString()];
+				Material curtainWallMaterial = entities.Materials[curtainWall.MaterialId.Handle.ToString()];
 
 				convertedCurtainWall.MaterialName = curtainWallMaterial.Name;
 
@@ -102,13 +86,13 @@ namespace Collection
 				convertedCurtainWall.TransmittanceScale = curtainWallMaterial.TransmittanceScale;
 				convertedCurtainWall.TwoSided = curtainWallMaterial.TwoSided;
 
-				ConvertedEntities.CurtainWalls.Add(convertedCurtainWall);
+				convertedEntities.CurtainWalls.Add(convertedCurtainWall);
 			}
 		}
 
-		public void ConvertDoors()
+		public void ConvertDoors(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Door door in Entities.Doors)
+			foreach (Door door in entities.Doors)
 			{
 				Component.Door convertedDoor = new Component.Door();
 
@@ -149,10 +133,10 @@ namespace Collection
 				convertedDoor.CollisionType = door.CollisionType.ToString();
 
 				convertedDoor.StyleHandle = door.StyleId.Handle;
-				convertedDoor.Style = Entities.DoorStyles[door.StyleId.Handle.ToString()].Name;
+				convertedDoor.Style = entities.DoorStyles[door.StyleId.Handle.ToString()].Name;
 				convertedDoor.StyleId = door.StyleId.ToString();
 
-				Material doorMaterial = Entities.Materials[door.MaterialId.Handle.ToString()];
+				Material doorMaterial = entities.Materials[door.MaterialId.Handle.ToString()];
 
 				convertedDoor.MaterialName = doorMaterial.Name;
 
@@ -167,13 +151,13 @@ namespace Collection
 				convertedDoor.TransmittanceScale = doorMaterial.TransmittanceScale;
 				convertedDoor.TwoSided = doorMaterial.TwoSided;
 
-				ConvertedEntities.Doors.Add(convertedDoor);
+				convertedEntities.Doors.Add(convertedDoor);
 			}
 		}
 
-		public void ConvertOpenings()
+		public void ConvertOpenings(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Opening opening in Entities.Openings)
+			foreach (Opening opening in entities.Openings)
 			{
 				Component.Opening convertedOpening = new Component.Opening();
 
@@ -215,13 +199,13 @@ namespace Collection
 				convertedOpening.CollisionType = opening.CollisionType.ToString();
 
 
-				ConvertedEntities.Openings.Add(convertedOpening);
+				convertedEntities.Openings.Add(convertedOpening);
 			}
 		}
 	
-		public void ConvertWalls()
+		public void ConvertWalls(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Wall wall in Entities.Walls)
+			foreach (Wall wall in entities.Walls)
 			{
 				Component.Wall convertedWall = new Component.Wall();
 
@@ -261,10 +245,10 @@ namespace Collection
 				convertedWall.CollisionType = wall.CollisionType.ToString();
 
 				convertedWall.StyleHandle = wall.StyleId.Handle;
-				convertedWall.Style = Entities.WallStyles[wall.StyleId.Handle.ToString()].Name;
+				convertedWall.Style = entities.WallStyles[wall.StyleId.Handle.ToString()].Name;
 				convertedWall.StyleId = wall.StyleId.ToString();
 
-				Material wallMaterial = Entities.Materials[wall.MaterialId.Handle.ToString()];
+				Material wallMaterial = entities.Materials[wall.MaterialId.Handle.ToString()];
 
 				convertedWall.MaterialName = wallMaterial.Name;
 
@@ -279,13 +263,13 @@ namespace Collection
 				convertedWall.TransmittanceScale = wallMaterial.TransmittanceScale;
 				convertedWall.TwoSided = wallMaterial.TwoSided;
 
-				ConvertedEntities.Walls.Add(convertedWall);
+				convertedEntities.Walls.Add(convertedWall);
 			}
 		}
 
-		public void ConvertWindows()
+		public void ConvertWindows(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Window window in Entities.Windows)
+			foreach (Window window in entities.Windows)
 			{
 				Component.Window convertedWindow = new Component.Window();
 
@@ -327,10 +311,10 @@ namespace Collection
 				convertedWindow.CollisionType = window.CollisionType.ToString();
 
 				convertedWindow.StyleHandle = window.StyleId.Handle;
-				convertedWindow.Style = Entities.WindowStyles[window.StyleId.Handle.ToString()].Name;
+				convertedWindow.Style = entities.WindowStyles[window.StyleId.Handle.ToString()].Name;
 				convertedWindow.StyleId = window.StyleId.ToString();
 
-				Material wallMaterial = Entities.Materials[window.MaterialId.Handle.ToString()];
+				Material wallMaterial = entities.Materials[window.MaterialId.Handle.ToString()];
 
 				convertedWindow.MaterialName = wallMaterial.Name;
 
@@ -345,13 +329,13 @@ namespace Collection
 				convertedWindow.TransmittanceScale = wallMaterial.TransmittanceScale;
 				convertedWindow.TwoSided = wallMaterial.TwoSided;
 
-				ConvertedEntities.Windows.Add(convertedWindow);
+				convertedEntities.Windows.Add(convertedWindow);
 			}
 		}
 
-		public void ConvertWindowAssemblies()
+		public void ConvertWindowAssemblies(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (WindowAssembly windowAssembly in Entities.WindowAssemblies)
+			foreach (WindowAssembly windowAssembly in entities.WindowAssemblies)
 			{
 				Component.WindowAssembly convertedWindowAssembly = new Component.WindowAssembly();
 
@@ -393,10 +377,10 @@ namespace Collection
 				convertedWindowAssembly.CollisionType = windowAssembly.CollisionType.ToString();
 
 				convertedWindowAssembly.StyleHandle = windowAssembly.StyleId.Handle;
-				convertedWindowAssembly.Style = Entities.WindowStyles[windowAssembly.StyleId.Handle.ToString()].Name;
+				convertedWindowAssembly.Style = entities.WindowAssemblyStyles[windowAssembly.StyleId.Handle.ToString()].Name;
 				convertedWindowAssembly.StyleId = windowAssembly.StyleId.ToString();
 
-				Material wallMaterial = Entities.Materials[windowAssembly.MaterialId.Handle.ToString()];
+				Material wallMaterial = entities.Materials[windowAssembly.MaterialId.Handle.ToString()];
 
 				convertedWindowAssembly.MaterialName = wallMaterial.Name;
 
@@ -411,25 +395,25 @@ namespace Collection
 				convertedWindowAssembly.TransmittanceScale = wallMaterial.TransmittanceScale;
 				convertedWindowAssembly.TwoSided = wallMaterial.TwoSided;
 
-				ConvertedEntities.WindowAssemblies.Add(convertedWindowAssembly);
+				convertedEntities.WindowAssemblies.Add(convertedWindowAssembly);
 			}
 		}
 
-		public void ConvertBlockReferences()
+		public void ConvertBlockReferences(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Autodesk.AutoCAD.DatabaseServices.BlockReference blockReference in Entities.BlockReferences)
+			foreach (Autodesk.AutoCAD.DatabaseServices.BlockReference blockReference in entities.BlockReferences)
 			{
 				Component.BlockReference convertedBlockReference = new Component.BlockReference();
 
-				convertedBlockReference.DisplayName = blockReference.Name;
+				//convertedBlockReference.DisplayName = blockReference.Name;
 
 				convertedBlockReference.BlockName = blockReference.BlockName;
 				convertedBlockReference.BlockId = blockReference.BlockId.ToString();
 
 				convertedBlockReference.ObjectId = blockReference.ObjectId.ToString();
 
-				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MaxPoint.X, blockReference.Bounds.Value.MaxPoint.Y, blockReference.Bounds.Value.MaxPoint.Z));
-				convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MinPoint.X, blockReference.Bounds.Value.MinPoint.Y, blockReference.Bounds.Value.MinPoint.Z));
+				//convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MaxPoint.X, blockReference.Bounds.Value.MaxPoint.Y, blockReference.Bounds.Value.MaxPoint.Z));
+				//convertedBlockReference.Bounds.Add(new Component.Point(blockReference.Bounds.Value.MinPoint.X, blockReference.Bounds.Value.MinPoint.Y, blockReference.Bounds.Value.MinPoint.Z));
 
 				convertedBlockReference.Handle = blockReference.Handle;
 				convertedBlockReference.HandleId = blockReference.Handle.ToString();
@@ -452,25 +436,25 @@ namespace Collection
 
 				convertedBlockReference.ScaleFactor = new Component.Point(blockReference.ScaleFactors.X, blockReference.ScaleFactors.Y, blockReference.ScaleFactors.Z); ;
 
-				ConvertedEntities.BlockReferences.Add(convertedBlockReference);
+				convertedEntities.BlockReferences.Add(convertedBlockReference);
 			}
 		}
 
-		public void ConvertMultiViewBlockReferences()
+		public void ConvertMultiViewBlockReferences(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (MultiViewBlockReference multiViewBlockReference in Entities.MultiViewBlockReferences)
+			foreach (MultiViewBlockReference multiViewBlockReference in entities.MultiViewBlockReferences)
 			{
 				Component.MultiViewBlockReference convertedMultiViewBlockReference = new Component.MultiViewBlockReference();
 
-				convertedMultiViewBlockReference.DisplayName = multiViewBlockReference.DisplayName;
+				//convertedMultiViewBlockReference.DisplayName = multiViewBlockReference.DisplayName;
 
 				convertedMultiViewBlockReference.BlockName = multiViewBlockReference.BlockName;
 				convertedMultiViewBlockReference.BlockId = multiViewBlockReference.BlockId.ToString();
 
 				convertedMultiViewBlockReference.ObjectId = multiViewBlockReference.ObjectId.ToString();
 
-				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MaxPoint.X, multiViewBlockReference.Bounds.Value.MaxPoint.Y, multiViewBlockReference.Bounds.Value.MaxPoint.Z));
-				convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MinPoint.X, multiViewBlockReference.Bounds.Value.MinPoint.Y, multiViewBlockReference.Bounds.Value.MinPoint.Z));
+				//convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MaxPoint.X, multiViewBlockReference.Bounds.Value.MaxPoint.Y, multiViewBlockReference.Bounds.Value.MaxPoint.Z));
+				//convertedMultiViewBlockReference.Bounds.Add(new Component.Point(multiViewBlockReference.Bounds.Value.MinPoint.X, multiViewBlockReference.Bounds.Value.MinPoint.Y, multiViewBlockReference.Bounds.Value.MinPoint.Z));
 
 				convertedMultiViewBlockReference.Handle = multiViewBlockReference.Handle;
 				convertedMultiViewBlockReference.HandleId = multiViewBlockReference.Handle.ToString();
@@ -496,13 +480,13 @@ namespace Collection
 				convertedMultiViewBlockReference.StyleHandle = multiViewBlockReference.StyleId.Handle;
 				convertedMultiViewBlockReference.StyleId = multiViewBlockReference.StyleId.ToString();
 
-				ConvertedEntities.MultiViewBlockReferences.Add(convertedMultiViewBlockReference);
+				convertedEntities.MultiViewBlockReferences.Add(convertedMultiViewBlockReference);
 			}
 		}
 
-		public void ConvertSpaces()
+		public void ConvertSpaces(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Space space in Entities.Spaces)
+			foreach (Space space in entities.Spaces)
 			{
 				Component.Space convertedSpace= new Component.Space();
 
@@ -539,13 +523,13 @@ namespace Collection
 				convertedSpace.StyleHandle = space.StyleId.Handle;
 				convertedSpace.StyleId = space.StyleId.ToString();
 
-				ConvertedEntities.Spaces.Add(convertedSpace);
+				convertedEntities.Spaces.Add(convertedSpace);
 			}
 		}
 
-		public void ConvertZones()
+		public void ConvertZones(ACADEntities entities, Entities convertedEntities)
 		{
-			foreach (Zone zone in Entities.Zones)
+			foreach (Zone zone in entities.Zones)
 			{
 				Component.Zone convertedZone= new Component.Zone();
 
@@ -585,7 +569,7 @@ namespace Collection
 				convertedZone.StyleHandle = zone.StyleId.Handle;
 				convertedZone.StyleId = zone.StyleId.ToString();
 
-				ConvertedEntities.Zones.Add(convertedZone);
+				convertedEntities.Zones.Add(convertedZone);
 			}
 		}
 	}
