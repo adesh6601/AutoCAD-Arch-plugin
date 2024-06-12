@@ -12,7 +12,6 @@ namespace Plugin
         Builder Builder = new Builder();
 
         Entities Entities = new Entities();
-
         Building Building = new Building();
 
 		[CommandMethod("Initiate")]
@@ -22,7 +21,7 @@ namespace Plugin
 
             Builder.Build(Entities, Building);
 
-            int i = 0;
+            int breakpoint = 0;
 		}
     }
 }
