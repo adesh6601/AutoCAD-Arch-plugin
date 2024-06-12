@@ -3,12 +3,13 @@ using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Component
 {
-    public class Door : ACADObject
+	public class WindowAssembly : ACADObject
 	{
+		public int CellCount { get; set; }
 		public string Description { get; set; }
 		public string WallId { get; set; }
 
-		public double Width { get; set; }
+		public double Length { get; set; }
 		public double Height { get; set; }
 		public double Area { get; set; }
 
@@ -38,6 +39,6 @@ namespace Component
 		public bool TwoSided { get; set; }
 
 
-		public Door() : base() { }
+		public WindowAssembly() : base() { }
 	}
 }

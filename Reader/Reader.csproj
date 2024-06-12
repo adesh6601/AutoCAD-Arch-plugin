@@ -66,6 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
     </Reference>
+    <Reference Include="Model">
+      <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\External-dll\Newtonsoft.Json.dll</HintPath>
@@ -81,13 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Reader.cs" />
-    <Compile Include="Component\BlockRef.cs" />
-    <Compile Include="Component\Door.cs" />
-    <Compile Include="Component\MultiViewBlockRef.cs" />
-    <Compile Include="Component\Room.cs" />
-    <Compile Include="Component\Wall.cs" />
-    <Compile Include="Component\Window.cs" />
-    <Compile Include="Component\Zone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

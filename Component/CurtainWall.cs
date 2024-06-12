@@ -3,20 +3,21 @@ using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Component
 {
-    public class Door : ACADObject
+	public class CurtainWall : ACADObject
 	{
-		public string Description { get; set; }
-		public string WallId { get; set; }
+		public int CellCount { get; set; }
 
+		public string Description { get; set; }
+
+		public double Length { get; set; }
 		public double Width { get; set; }
-		public double Height { get; set; }
+		public double BaseHeight { get; set; }
 		public double Area { get; set; }
 
 		public Point StartPoint { get; set; }
 		public Point EndPoint { get; set; }
 
-		public Point Normal { get; set; }
-		public double Offset { get; set; }
+		public double Rotation { get; set; }
 
 		public string CollisionType { get; set; }
 
@@ -38,6 +39,6 @@ namespace Component
 		public bool TwoSided { get; set; }
 
 
-		public Door() : base() { }
+		public CurtainWall() : base() { }
 	}
 }

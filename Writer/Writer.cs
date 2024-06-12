@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reader.Component {
-    internal interface MultiViewBlockRef {
+namespace Writer
+{
+    public class Writer
+    {
     }
 }

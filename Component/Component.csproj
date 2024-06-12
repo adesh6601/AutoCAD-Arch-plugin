@@ -31,36 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcCoreMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AcCui">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcCui.dll</HintPath>
-    </Reference>
     <Reference Include="AcDbMgd">
       <HintPath>..\Reader\bin\Debug\External-dll\AcDbMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AcMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AdWindows">
-      <HintPath>..\Reader\bin\Debug\External-dll\AdWindows.dll</HintPath>
-    </Reference>
-    <Reference Include="AecArchMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecArchMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecBaseMgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecBaseMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecProjectBaseMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecProjectBaseMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecPropDataMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecPropDataMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Reader\bin\Debug\External-dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,8 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockReference.cs" />
+    <Compile Include="CurtainWall.cs" />
     <Compile Include="Door.cs" />
+    <Compile Include="Slab.cs" />
+    <Compile Include="WindowAssembly.cs" />
     <Compile Include="MultiViewBlockReference.cs" />
+    <Compile Include="ACADObject.cs" />
+    <Compile Include="Opening.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Space.cs" />

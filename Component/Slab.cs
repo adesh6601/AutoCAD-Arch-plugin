@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Collection
+namespace Component
 {
-	public class Room
+	public class Slab : ACADObject
 	{
-		public Room() { }
+
 	}
 }
