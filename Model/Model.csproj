@@ -31,33 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcCoreMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AcCui">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcCui.dll</HintPath>
-    </Reference>
-    <Reference Include="AcDbMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcDbMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AcMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AcMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AdWindows">
-      <HintPath>..\Reader\bin\Debug\External-dll\AdWindows.dll</HintPath>
-    </Reference>
-    <Reference Include="AecArchMgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecArchMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecBaseMgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecBaseMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecProjectBaseMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecProjectBaseMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecPropDataMgd">
-      <HintPath>..\Reader\bin\Debug\External-dll\AecPropDataMgd.dll</HintPath>
-    </Reference>
     <Reference Include="Collection">
       <HintPath>..\Collection\bin\Debug\Collection.dll</HintPath>
     </Reference>

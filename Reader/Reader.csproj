@@ -32,32 +32,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd">
-      <HintPath>bin\Debug\External-dll\AcCoreMgd.dll</HintPath>
+    <Reference Include="accoremgd">
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\accoremgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcCui">
-      <HintPath>bin\Debug\External-dll\AcCui.dll</HintPath>
+    <Reference Include="acdbmgd, Version=24.3.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\acdbmgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcDbMgd">
-      <HintPath>bin\Debug\External-dll\AcDbMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AcMgd">
-      <HintPath>bin\Debug\External-dll\AcMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AdWindows">
-      <HintPath>bin\Debug\External-dll\AdWindows.dll</HintPath>
+    <Reference Include="acmgd">
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="AecArchMgd">
-      <HintPath>bin\Debug\External-dll\AecArchMgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecArchMgd.dll</HintPath>
     </Reference>
     <Reference Include="AecBaseMgd">
-      <HintPath>bin\Debug\External-dll\AecBaseMgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecBaseMgd.dll</HintPath>
     </Reference>
     <Reference Include="AecProjectBaseMgd">
-      <HintPath>bin\Debug\External-dll\AecProjectBaseMgd.dll</HintPath>
-    </Reference>
-    <Reference Include="AecPropDataMgd">
-      <HintPath>bin\Debug\External-dll\AecPropDataMgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\ACA\AecProjectBaseMgd.dll</HintPath>
     </Reference>
     <Reference Include="Collection">
       <HintPath>..\Collection\bin\Debug\Collection.dll</HintPath>
@@ -65,9 +57,6 @@
     <Reference Include="Component, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Component\bin\Debug\Component.dll</HintPath>
-    </Reference>
-    <Reference Include="Model">
-      <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
